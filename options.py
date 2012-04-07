@@ -5,8 +5,8 @@ import os
 class Options:
   def __init__(self, mieru):
     self.mieru = mieru
-    optionsFilename = 'mieru_options.bin'
-    mieruProfileFolderName = '.mieru'
+    optionsFilename = 'repho_options.bin'
+    mieruProfileFolderName = '.repho'
     userHomePath = os.getenv("HOME")
     self.profileFolderPath = os.path.join(userHomePath, mieruProfileFolderName)
     self.optionsPath = os.path.join(self.profileFolderPath, optionsFilename)

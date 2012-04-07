@@ -2,5 +2,4 @@
 
 # start Mieru with fremantle platform module and
 # Qt Components (harmattan) GUI module
-cd /opt/mieru
-python mieru.py -u harmattan -p maemo5
+python repho.py -p maemo5
