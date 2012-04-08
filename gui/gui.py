@@ -2,7 +2,7 @@
 
 class GUI:
   def __init__(self, mieru):
-    self.mieru = mieru
+    self.repho = mieru
 
   def resize(self, w, h):
     """resize the GUI to given width and height"""
@@ -89,10 +89,10 @@ class GUI:
     return None
 
   def _destroyed(self):
-    self.mieru.destroy()
+    self.repho.destroy()
 
   def _keyPressed(self, keyName):
-    self.mieru.keyPressed(keyName)
+    self.repho.keyPressed(keyName)
 
 
 def getGui(mieru, type="gtk",accel=True, size=(800,480)):

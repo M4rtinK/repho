@@ -5,35 +5,16 @@ import com.nokia.extras 1.0
 
 PageStackWindow {
     showStatusBar : options.get("QMLShowStatusBar", false)
-    showToolBar : options.get("QMLRememberToolbarState", false) ? options.get("QMLToolbarState", true) : true
+    showToolBar : true
     id : rootWindow
     anchors.fill : parent
     initialPage : MainView {
                       id : mainView
                       }
 
-    property string statsText : ""
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value
     with actual status bar height */
-
-    function showPage(path, pageId) {
-        mainView.showPage(path, pageId)
-        }
-
-    function setPageNumber(pageNumber) {
-        mainView.pageNumber = pageNumber;
-        }
-
-    function setMaxPageNumber(maxPageNumber) {
-        mainView.maxPageNumber = maxPageNumber;
-        }
-
-    // ** trigger notifications
-    function notify(text) {
-        notification.text = text;
-        notification.show();
-        }
 
     // ** Open a page and push it in the stack
     function openFile(file) {
@@ -62,9 +43,19 @@ PageStackWindow {
       onAccepted: readingState.openManga(selectedFile);
     }
 
-    PageFitSelector {
-      id : pageFitSelector
-      onAccepted: mainView.setPageFitMode(pageFitMode)
+    OverlayMenu {
+      id : ageFitSelectorOverlay
+    }
+
+    SideBySideMenu {
+      id : pageFitSelectorSbS
+    }
+
+
+    // ** trigger notifications
+    function notify(text) {
+        notification.text = text;
+        notification.show();
     }
 
     InfoBanner {

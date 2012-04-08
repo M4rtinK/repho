@@ -9,11 +9,7 @@ from PySide.QtGui import *
 from PySide.QtDeclarative import *
 #from PySide import QtOpenGL
 
-import info
 import gui
-import mieru
-import qml_page
-import manga as manga_module
 
 def newlines2brs(text):
   """ QML uses <br> instead of \n for linebreak """
@@ -21,7 +17,7 @@ def newlines2brs(text):
 
 class QMLGUI(gui.GUI):
   def __init__(self, mieru, type, size=(854,480)):
-    self.mieru = mieru
+    self.repho = mieru
 
     self.activePage = None
 
@@ -47,32 +43,28 @@ class QMLGUI(gui.GUI):
 #    self.view.setResizeMode(QDeclarativeView.SizeViewToRootObject)
 
     # add image providers
-    self.pageProvider = MangaPageImageProvider(self)
-    self.iconProvider = IconImageProvider()
-    self.view.engine().addImageProvider("page",self.pageProvider)
-    self.view.engine().addImageProvider("icons",self.iconProvider)
+#    self.pageProvider = MangaPageImageProvider(self)
+#    self.iconProvider = IconImageProvider()
+#    self.view.engine().addImageProvider("page",self.pageProvider)
+#    self.view.engine().addImageProvider("icons",self.iconProvider)
     rc = self.view.rootContext()
-    # make the reading state accessible from QML
-    readingState = ReadingState(self)
-    rc.setContextProperty("readingState", readingState)
-    # make stats accessible from QML
-    stats = Stats(self.mieru.stats)
-    rc.setContextProperty("stats", stats)
+    # make the main context accessible from QML
+    rc.setContextProperty("repho", Repho(self))
     # make options accessible from QML
-    options = Options(self.mieru)
+    options = Options(self.repho)
     rc.setContextProperty("options", options)
     # make platform module accessible from QML
-    platform = Platform(self.mieru)
+    platform = Platform(self.repho)
     rc.setContextProperty("platform", platform)
 
-    # ** history list handling **
-    # get the objects and wrap them
-    historyListController = HistoryListController(self.mieru)
-    self.historyList = []
-    self.historyListModel = HistoryListModel(self.mieru, self.historyList)
-    # make available from QML
-    rc.setContextProperty('historyListController', historyListController)
-    rc.setContextProperty('historyListModel', self.historyListModel)
+#    # ** history list handling **
+#    # get the objects and wrap them
+#    historyListController = HistoryListController(self.mieru)
+#    self.historyList = []
+#    self.historyListModel = HistoryListModel(self.mieru, self.historyList)
+#    # make available from QML
+#    rc.setContextProperty('historyListController', historyListController)
+#    rc.setContextProperty('historyListModel', self.historyListModel)
 
 
     # Create an URL to the QML file
@@ -85,24 +77,17 @@ class QMLGUI(gui.GUI):
       # QtQuick 1.0 fallback
       url = QUrl('gui/qml_1.0_fremantle/main.qml')
 
-    # Set the QML file and show
+    # Set the QML file and show it
     self.view.setSource(url)
     self.window.closeEvent = self._qtWindowClosed
     self.window.show()
 
     self.rootObject = self.view.rootObject()
-#    self.nextButton = self.rootObject.findChild(QObject, "nextButton")
-#    self.prevButton = self.rootObject.findChild(QObject, "prevButton")
-#    self.pageFlickable = self.rootObject.findChild(QObject, "pageFlickable")
 
-    self.lastTimeRequestedOtherManga = None
-#    self.nextButton.clicked.connect(self._nextCB)
-#    self.pageFlickable.clicked.connect(self._prevCB)
-#    self.prevButton.clicked.connect(self._prevCB)
     self.toggleFullscreen()
 
     # check if first start dialog has to be shown
-    if self.mieru.get("QMLShowFirstStartDialog", True):
+    if self.repho.get("QMLShowFirstStartDialog", True):
       self.rootObject.openFirstStartDialog()
 
 #  def resize(self, w, h):
@@ -126,16 +111,16 @@ class QMLGUI(gui.GUI):
   def startMainLoop(self):
     """start the main loop or its equivalent"""
 
-    # restore page centering
-    mv = self.rootObject.findChild(QObject, "mainView")
-    mv.restoreContentShift()
+#    # restore page centering
+#    mv = self.rootObject.findChild(QObject, "mainView")
+#    mv.restoreContentShift()
 
     # start main loop
     self.app.exec_()
 
   def _qtWindowClosed(self, event):
     print('qt window closing down')
-    self.mieru.destroy()
+    self.repho.destroy()
 
   def stopMainLoop(self):
     """stop the main loop or its equivalent"""
@@ -147,33 +132,6 @@ class QMLGUI(gui.GUI):
 
     # quit the application
     self.app.exit()
-
-  def getPage(self, fileObject, mieru, fitOnStart=False):
-    return qml_page.QMLPage(fileObject, self)
-
-  def showPage(self, page, mangaInstance, id):
-    """show a page on the stage"""
-
-    """first get the file object containing
-    the page image to a local variable so it can be loaded to a
-    QML Image using QDeclarativeImageProvider"""
-
-    path = mangaInstance.getPath()                              
-    self.rootObject.showPage(path, id)
-
-  def newActiveManga(self, manga):
-    """update max page number in the QML GUI"""
-#    print "* new manga loaded *"
-    maxPageNumber = manga.getMaxPageNumber()
-    pageNumber = manga.getActivePageNumber()
-    # assure sane slider behaviour
-
-    if maxPageNumber == None:
-      maxPageNumber = 2
-
-    self.rootObject.setPageNumber(pageNumber)
-    self.rootObject.setMaxPageNumber(maxPageNumber)
-
 
   def getScale(self):
     """get scale from the page flickable"""
@@ -187,37 +145,6 @@ class QMLGUI(gui.GUI):
 
   def getWindow(self):
     return self.window
-    
-  def _nextCB(self):
-    print "turning page forward"
-    self.mieru.activeManga.next()
-
-  def _prevCB(self):
-    print "turning page forward"
-    self.mieru.activeManga.previous()
-
-  def _getPageByPathId(self, mangaPath, id):
-#    print "PAGE BY ID", mangaPath, id
-    """as QML automatically caches images by URL,
-    using a url consisting from a filesystem path to the container and page id,
-    we basically create a hash with very unlikely collisions (eq. same hash resulting in different images
-    and thus can avoid doing caching on our side
-
-    NOTE: some images might get cached twice
-    example: lets have a 10 page manga, in /tmp/manga.zip
-    URLs "/tmp/manga.zip|9" and "/tmp/manga.zip|-1" are the same image
-    but the URLs are the same and QML would probably cache the image twice
-    """
-    if self.mieru.activeManga and self.mieru.activeManga.getPath() == mangaPath:
-      return self.mieru.activeManga.getPageById(id)
-    elif self.lastTimeRequestedOtherManga and self.lastTimeRequestedOtherManga.getPath() == mangaPath:
-      return self.lastTimeRequestedOtherManga.getPageById(id)
-    else:
-      manga = self.mieru.openManga(mangaPath, None, replaceCurrent=False, loadNotify=False)
-      """for the cached manga instance, we don't want any pages to be set as active,
-         we don't want loafing notifications and we don't want it to replace the current manga"""
-      self.lastTimeRequestedOtherManga = manga
-      return manga.getPageById(id)
 
   def _notify(self, text, icon=""):
     """trigger a notification using the Qt Quick Components
@@ -241,28 +168,13 @@ class MangaPageImageProvider(QDeclarativeImageProvider):
       self.gui = gui
 
   def requestImage(self, pathId, size, requestedSize):
-#    print "IMAGE REQUESTED"
-#    print size
-#    print requestedSize
-
-
     (path,id) = pathId.split('|',1)
     id = int(id) # string -> integer
-#    print  "** IR:", path, id
     (page, id) = self.gui._getPageByPathId(path, id)
     imageFileObject = page.popImage()
     img=QImage()
     img.loadFromData(imageFileObject.read())
-#    if size:
-#      print "size"
-#      size.setWidth(img.width())
-#      size.setHeight(img.height())
-#    if requestedSize:
-#      print "requestedSize"
-#      return img.scaled(requestedSize)
-#    else:svw
-#      return img
-#    print img.size()
+
     return img
 
 class IconImageProvider(QDeclarativeImageProvider):
@@ -282,11 +194,11 @@ class IconImageProvider(QDeclarativeImageProvider):
     except Exception, e:
       print("loading icon failed", e)
 
-class ReadingState(QObject):
+class Repho(QObject):
   def __init__(self, gui):
     QObject.__init__(self)
     self.gui = gui
-    self.mieru = gui.mieru
+    self.repho = gui.repho
 
   @QtCore.Slot(result=str)
   def next(self):
@@ -355,13 +267,13 @@ class ReadingState(QObject):
     # remove the "file:// part of the path"
     path = re.sub('file://', '', path, 1)
     folder = os.path.dirname(path)
-    self.mieru.set('lastChooserFolder', folder)
-    self.mieru.openManga(path)
+    self.repho.set('lastChooserFolder', folder)
+    self.repho.openManga(path)
 
   @QtCore.Slot(result=str)
   def getSavedFileSelectorPath(self):
-    defaultPath = self.mieru.platform.getDefaultFileSelectorPath()
-    lastFolder = self.mieru.get('lastChooserFolder', defaultPath)
+    defaultPath = self.repho.platform.getDefaultFileSelectorPath()
+    lastFolder = self.repho.get('lastChooserFolder', defaultPath)
     return lastFolder
 
   @QtCore.Slot()
@@ -385,7 +297,7 @@ class ReadingState(QObject):
   @QtCore.Slot(result=float)
   def getActiveMangaScale(self):
     """return the saved scale of the currently active manga"""
-    activeManga = self.mieru.getActiveManga()
+    activeManga = self.repho.getActiveManga()
     if activeManga:
       return activeManga.getScale()
     else:
@@ -394,8 +306,8 @@ class ReadingState(QObject):
   @QtCore.Slot(result=float)
   def getActiveMangaShiftX(self):
     """return the saved X shift of the currently active manga"""
-    activeManga = self.mieru.getActiveManga()
-    print self.mieru.getActiveManga()
+    activeManga = self.repho.getActiveManga()
+    print self.repho.getActiveManga()
     if activeManga:
       return activeManga.getShiftX()
     else:
@@ -404,7 +316,7 @@ class ReadingState(QObject):
   @QtCore.Slot(result=float)
   def getActiveMangaShiftY(self):
     """return the saved Y shift of the currently active manga"""
-    activeManga = self.mieru.getActiveManga()
+    activeManga = self.repho.getActiveManga()
     if activeManga:
       return activeManga.getShiftY()
     else:
