@@ -69,17 +69,16 @@ Page {
     Camera {
         id: camera
         //x: 0
-        //y: 0
-        anchors.fill:parent
-        //captureResolution: "1152x648"
-        //anchors.horizontalCenter: parent.horizontalCenter
+        y: 0
+        //anchors.fill:parent
+        captureResolution: "1152x648"
+        anchors.horizontalCenter: parent.horizontalCenter
         //width: parent.width // - stillControls.buttonsPanelWidth
         //height: parent.height
         focus: visible //to receive focus and capture key events
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
         state: Camera.ActiveState
-        visible : true
 
         //captureResolution : "640x480"
 
