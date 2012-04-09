@@ -3,6 +3,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
+import QtMultimediaKit 1.1
 
 Page {
     id : mainView
@@ -57,6 +58,28 @@ Page {
 
     Component.onCompleted : {
       restoreRotation()
+    }
+
+    Camera {
+        id: camera
+        x: 0
+        y: 0
+        width: parent.width // - stillControls.buttonsPanelWidth
+        height: parent.height
+        focus: visible //to receive focus and capture key events
+        //captureResolution : "640x480"
+
+        //flashMode: stillControls.flashMode
+        //whiteBalanceMode: stillControls.whiteBalance
+        //exposureCompensation: stillControls.exposureCompensation
+
+        onImageCaptured : {
+            console.log("image captured")
+            console.log(preview)
+            //photoPreview.source = preview
+            //stillControls.previewAvailable = true
+            //cameraUI.state = "PhotoPreview"
+        }
     }
 
     /** Toolbar **/
