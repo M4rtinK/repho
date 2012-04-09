@@ -7,6 +7,7 @@ import QtMultimediaKit 1.1
 
 Page {
     id : mainView
+    //orientationLock: PageOrientation.LockLandscape
     objectName : "mainView"
     anchors.fill : parent
     tools : mainViewToolBar
@@ -64,12 +65,14 @@ Page {
     Rectangle {
         anchors.fill : parent
         color : "black"
+        rotation: screen.currentOrientation == 1 ? 90 :0
     }
 
     Camera {
         id: camera
-        //x: 0
+        x: 0
         y: 0
+        rotation: screen.currentOrientation == 1 ? 90 :0
         //anchors.fill:parent
         captureResolution: "1152x648"
         anchors.horizontalCenter: parent.horizontalCenter
