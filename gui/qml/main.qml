@@ -2,6 +2,7 @@ import Qt 4.7
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
+import QtMultimediaKit 1.1
 
 PageStackWindow {
     showStatusBar : options.get("QMLShowStatusBar", false)
@@ -11,6 +12,25 @@ PageStackWindow {
     initialPage : MainView {
                       id : mainView
                       }
+
+    Rectangle {
+        id:           backgroundRectangle
+        anchors.fill: parent
+        color:        "red"
+
+        Camera {
+            id:                camera
+            anchors.centerIn:  parent
+            width:             480
+            height:            360
+            captureResolution: "480x360"
+        }
+    }
+
+    Component.onCompleted : {
+        camera.start()
+    }
+
 
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value

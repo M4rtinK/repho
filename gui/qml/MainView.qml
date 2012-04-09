@@ -60,10 +60,18 @@ Page {
       restoreRotation()
     }
 
+    /*
+    Rectangle {
+        anchors.fill : parent
+        color : "black"
+    }
+
+
     Camera {
         id: camera
         //x: 0
         y: 0
+        captureResolution: "1152x648"
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width // - stillControls.buttonsPanelWidth
         height: parent.height
@@ -87,6 +95,7 @@ Page {
             //cameraUI.state = "PhotoPreview"
         }
     }
+    */
 
     /** Toolbar **/
 
