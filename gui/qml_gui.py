@@ -1,4 +1,4 @@
-"""a QML GUI module for Mieru"""
+"""a QML GUI module for Repho"""
 
 import sys
 import re
@@ -16,8 +16,8 @@ def newlines2brs(text):
   return re.sub('\n', '<br>', text)
 
 class QMLGUI(gui.GUI):
-  def __init__(self, mieru, type, size=(854,480)):
-    self.repho = mieru
+  def __init__(self, repho, type, size=(854,480)):
+    self.repho = repho
 
     self.activePage = None
 
@@ -29,7 +29,7 @@ class QMLGUI(gui.GUI):
         
       def closeEvent(self, event):
         print "shutting down"
-        self.gui.mieru.destroy()
+        self.gui.repho.destroy()
 
     self.app = QApplication(sys.argv)
     self.view = ModifiedQDeclarativeView(self)
@@ -59,9 +59,9 @@ class QMLGUI(gui.GUI):
 
 #    # ** history list handling **
 #    # get the objects and wrap them
-#    historyListController = HistoryListController(self.mieru)
+#    historyListController = HistoryListController(self.repho)
 #    self.historyList = []
-#    self.historyListModel = HistoryListModel(self.mieru, self.historyList)
+#    self.historyListModel = HistoryListModel(self.repho, self.historyList)
 #    # make available from QML
 #    rc.setContextProperty('historyListController', historyListController)
 #    rc.setContextProperty('historyListModel', self.historyListModel)
@@ -159,7 +159,7 @@ class QMLGUI(gui.GUI):
 #    gobject.idle_add(callback, *args)
 #
 #  def _destroyCB(self, window):
-#    self.mieru.destroy()
+#    self.repho.destroy()
 
 class MangaPageImageProvider(QDeclarativeImageProvider):
   """the MangaPageImageProvider class provides manga pages to the QML layer"""
@@ -202,7 +202,7 @@ class Repho(QObject):
 
   @QtCore.Slot(result=str)
   def next(self):
-    activeManga = self.gui.mieru.getActiveManga()
+    activeManga = self.gui.repho.getActiveManga()
     if activeManga:
       path = activeManga.getPath()
       idValid, id = activeManga.next()
@@ -215,7 +215,7 @@ class Repho(QObject):
 
   @QtCore.Slot(result=str)
   def previous(self):
-    activeManga = self.gui.mieru.getActiveManga()
+    activeManga = self.gui.repho.getActiveManga()
     if activeManga:
       path = activeManga.getPath()
       idValid, id = activeManga.previous()
@@ -228,14 +228,14 @@ class Repho(QObject):
 
   @QtCore.Slot(int)
   def goToPage(self, pageNumber):
-    activeManga = self.gui.mieru.getActiveManga()
+    activeManga = self.gui.repho.getActiveManga()
     if activeManga:
       id = activeManga.PageNumber2ID(pageNumber)
       activeManga.gotoPageId(id)
 
   @QtCore.Slot(int, str)
   def setPageID(self, pageID, mangaPath):
-    activeManga = self.gui.mieru.getActiveManga()
+    activeManga = self.gui.repho.getActiveManga()
     if activeManga:
       # filter out false alarms
       if activeManga.getPath() == mangaPath:
@@ -243,7 +243,7 @@ class Repho(QObject):
 
   @QtCore.Slot(result=str)
   def getPrettyName(self):
-    activeManga = self.gui.mieru.getActiveManga()
+    activeManga = self.gui.repho.getActiveManga()
     if activeManga:
       return activeManga.getPrettyName()
     else:
@@ -282,7 +282,7 @@ class Repho(QObject):
     """the history list model needs to be updated only before the list
     is actually shown, no need to update it dynamically every time a manga is added
     to history"""
-    mangaStateObjects = [MangaStateWrapper(state) for state in self.gui.mieru.getSortedHistory()]
+    mangaStateObjects = [MangaStateWrapper(state) for state in self.gui.repho.getSortedHistory()]
     self.gui.historyListModel.setThings(mangaStateObjects)
     self.gui.historyListModel.reset()
 
@@ -292,7 +292,7 @@ class Repho(QObject):
     """the history list model needs to be updated only before the list
     is actually shown, no need to update it dynamically every time a manga is added
     to history"""
-    self.gui.mieru.clearHistory()
+    self.gui.repho.clearHistory()
 
   @QtCore.Slot(result=float)
   def getActiveMangaScale(self):
@@ -324,8 +324,8 @@ class Repho(QObject):
 
   @QtCore.Slot()
   def quit(self):
-    """shut down mieru"""
-    self.gui.mieru.destroy()
+    """shut down repho"""
+    self.gui.repho.destroy()
 
 
 class Stats(QtCore.QObject):
@@ -336,7 +336,7 @@ class Stats(QtCore.QObject):
 
   @QtCore.Slot(bool)
   def setOn(self, ON):
-    self.mieru.stats.setOn(ON)
+    self.repho.stats.setOn(ON)
 
   @QtCore.Slot()
   def reset(self):
@@ -375,13 +375,13 @@ class Stats(QtCore.QObject):
 
 class Platform(QtCore.QObject):
   """make stats available to QML and integrable as a property"""
-  def __init__(self, mieru):
+  def __init__(self, repho):
     QtCore.QObject.__init__(self)
-    self.mieru = mieru
+    self.repho = repho
 
   @QtCore.Slot()
   def minimise(self):
-    return self.mieru.platform.minimise()
+    return self.repho.platform.minimise()
 
   @QtCore.Slot(result=bool)
   def showMinimiseButton(self):
@@ -389,7 +389,7 @@ class Platform(QtCore.QObject):
     Harmattan handles this by the Swype UI and
     on PC this should be handled by window decorator
     """
-    return self.mieru.platform.showMinimiseButton()
+    return self.repho.platform.showMinimiseButton()
 
   @QtCore.Slot(result=bool)
   def showQuitButton(self):
@@ -397,7 +397,7 @@ class Platform(QtCore.QObject):
     Harmattan handles this by the Swype UI and
     on PC it is a custom to have the quit action in the main menu
     """
-    return self.mieru.platform.showQuitButton()
+    return self.repho.platform.showQuitButton()
 
   @QtCore.Slot(result=bool)
   def incompleteTheme(self):
@@ -406,13 +406,13 @@ class Platform(QtCore.QObject):
     Hopefully, this can be removed once the themes are in better shape.
     """
     # the Fremantle theme is incomplete
-    return self.mieru.platform.getIDString() == "maemo5"
+    return self.repho.platform.getIDString() == "maemo5"
 
 class Options(QtCore.QObject):
   """make options available to QML and integrable as a property"""
-  def __init__(self, mieru):
+  def __init__(self, repho):
       QtCore.QObject.__init__(self)
-      self.mieru = mieru
+      self.repho = repho
 
   """ like this, the function can accept
   and return different types to and from QML
@@ -425,10 +425,10 @@ class Options(QtCore.QObject):
   @QtCore.Slot(str, str, result=str)
   @QtCore.Slot(str, float, result=float)
   def get(self, key, default):
-    """get a value from Mierus persistent options dictionary"""
+    """get a value from Rephos persistent options dictionary"""
     print "GET"
-    print key, default, self.mieru.get(key, default)
-    return self.mieru.get(key, default)
+    print key, default, self.repho.get(key, default)
+    return self.repho.get(key, default)
 
 
   @QtCore.Slot(str, bool)
@@ -436,10 +436,10 @@ class Options(QtCore.QObject):
   @QtCore.Slot(str, str)
   @QtCore.Slot(str, float)
   def set(self, key, value):
-    """set a keys value in Mierus persistent options dictionary"""
+    """set a keys value in Rephos persistent options dictionary"""
     print "SET"
     print key, value
-    return self.mieru.set(key, value)
+    return self.repho.set(key, value)
 
   # for old PySide versions that don't support multiple
   # function decorations
@@ -447,50 +447,50 @@ class Options(QtCore.QObject):
   @QtCore.Slot(str, bool, result=bool)
   def getB(self, key, default):
     print "GET"
-    print key, default, self.mieru.get(key, default)
-    return self.mieru.get(key, default)
+    print key, default, self.repho.get(key, default)
+    return self.repho.get(key, default)
 
   @QtCore.Slot(str, str, result=str)
   def getS(self, key, default):
     print "GET"
-    print key, default, self.mieru.get(key, default)
-    return self.mieru.get(key, default)
+    print key, default, self.repho.get(key, default)
+    return self.repho.get(key, default)
 
   @QtCore.Slot(str, int, result=int)
   def getI(self, key, default):
     print "GET"
-    print key, default, self.mieru.get(key, default)
-    return self.mieru.get(key, default)
+    print key, default, self.repho.get(key, default)
+    return self.repho.get(key, default)
 
   @QtCore.Slot(str, float, result=float)
   def getF(self, key, default):
     print "GET"
-    print key, default, self.mieru.get(key, default)
-    return self.mieru.get(key, default)
+    print key, default, self.repho.get(key, default)
+    return self.repho.get(key, default)
 
   @QtCore.Slot(str, bool)
   def setB(self, key, value):
     print "SET"
     print key, value
-    return self.mieru.set(key, value)
+    return self.repho.set(key, value)
 
   @QtCore.Slot(str, str)
   def setS(self, key, value):
     print "SET"
     print key, value
-    return self.mieru.set(key, value)
+    return self.repho.set(key, value)
 
   @QtCore.Slot(str, int)
   def setI(self, key, value):
     print "SET"
     print key, value
-    return self.mieru.set(key, value)
+    return self.repho.set(key, value)
 
   @QtCore.Slot(str, float)
   def setF(self, key, value):
     print "SET"
     print key, value
-    return self.mieru.set(key, value)
+    return self.repho.set(key, value)
 
 
 
@@ -532,9 +532,9 @@ class MangaStateWrapper(QtCore.QObject):
 class HistoryListModel(QtCore.QAbstractListModel):
   COLUMNS = ('thing',)
 
-  def __init__(self, mieru, things):
+  def __init__(self, repho, things):
     QtCore.QAbstractListModel.__init__(self)
-    self.mieru = mieru
+    self.repho = repho
     self._things = things
     self.setRoleNames(dict(enumerate(HistoryListModel.COLUMNS)))
 
@@ -566,19 +566,19 @@ class HistoryListModel(QtCore.QAbstractListModel):
     for state in checked:
       paths.append(state.path)
     print paths
-    self.mieru.removeMangasFromHistory(paths)
+    self.repho.removeMangasFromHistory(paths)
     # quick and dirty remove
     for state in checked:
       self._things.remove(state)
 
 class HistoryListController(QtCore.QObject):
-  def __init__(self, mieru):
+  def __init__(self, repho):
     QtCore.QObject.__init__(self)
-    self.mieru = mieru
+    self.repho = repho
         
   @QtCore.Slot(QtCore.QObject)
   def thingSelected(self, wrapper):
-    self.mieru.openMangaFromState(wrapper.state)
+    self.repho.openMangaFromState(wrapper.state)
 
   @QtCore.Slot(QtCore.QObject, QtCore.QObject)
   def toggled(self, model, wrapper):

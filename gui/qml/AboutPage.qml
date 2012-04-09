@@ -17,7 +17,7 @@ Page {
         //font.pointSize: 24
     }
     Image {
-        id : aboutMieruIcon
+        id : aboutRephoIcon
         anchors.horizontalCenter : parent.horizontalCenter
         anchors.topMargin : 10
         anchors.top : aboutTitle.bottom
@@ -27,7 +27,7 @@ Page {
         id : aboutContactInfo
         anchors.horizontalCenter : parent.horizontalCenter
         //anchors.topMargin : 10
-        anchors.top : aboutMieruIcon.bottom
+        anchors.top : aboutRephoIcon.bottom
         text: "<style type='text/css'>p { margin-bottom:15px; margin-top:0px; }</style>" + readingState.getAboutText()
 
         onLinkActivated : {

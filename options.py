@@ -1,14 +1,14 @@
-"""Mieru persistent options storage"""
+"""Repho persistent options storage"""
 import marshal
 import os
 
 class Options:
-  def __init__(self, mieru):
-    self.mieru = mieru
+  def __init__(self, repho):
+    self.repho = repho
     optionsFilename = 'repho_options.bin'
-    mieruProfileFolderName = '.repho'
+    rephoProfileFolderName = '.repho'
     userHomePath = os.getenv("HOME")
-    self.profileFolderPath = os.path.join(userHomePath, mieruProfileFolderName)
+    self.profileFolderPath = os.path.join(userHomePath, rephoProfileFolderName)
     self.optionsPath = os.path.join(self.profileFolderPath, optionsFilename)
     self.checkProfilePath()
     print "options: profile path: %s" % self.profileFolderPath
@@ -31,7 +31,7 @@ class Options:
 #    print "options: saving options"
     try:
       f = open(self.optionsPath, "w")
-      marshal.dump(self.mieru.getDict(), f)
+      marshal.dump(self.repho.getDict(), f)
       f.close()
 #      print "options: successfully saved"
     except Exception, e:
@@ -42,9 +42,9 @@ class Options:
       f = open(self.optionsPath, "r")
       loadedData = marshal.load(f)
       f.close()
-      self.mieru.setDict(loadedData)
+      self.repho.setDict(loadedData)
     except Exception, e:
-      self.mieru.setDict({})
+      self.repho.setDict({})
       print "options: exception while loading saved options:\n%s" % e
 
 

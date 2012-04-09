@@ -1,8 +1,8 @@
 """a GUI chooser"""
 
 class GUI:
-  def __init__(self, mieru):
-    self.repho = mieru
+  def __init__(self, repho):
+    self.repho = repho
 
   def resize(self, w, h):
     """resize the GUI to given width and height"""
@@ -95,15 +95,15 @@ class GUI:
     self.repho.keyPressed(keyName)
 
 
-def getGui(mieru, type="gtk",accel=True, size=(800,480)):
+def getGui(repho, type="gtk",accel=True, size=(800,480)):
   """return a GUI object"""
   if type=="gtk" and accel:
     import cluttergtk
     import clutter_gui
-    return clutter_gui.ClutterGTKGUI(mieru, type, size)
+    return clutter_gui.ClutterGTKGUI(repho, type, size)
   elif type=="QML" and accel:
     import qml_gui
-    return qml_gui.QMLGUI(mieru, type, size)
+    return qml_gui.QMLGUI(repho, type, size)
 
 
 

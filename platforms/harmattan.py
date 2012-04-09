@@ -1,19 +1,19 @@
 """
-Mieru hildon UI (for Maemo 5@N900)
+Repho hildon UI (for Maemo 5@N900)
 """
 
 from base_platform import BasePlatform
 
 class Harmattan(BasePlatform):
-  def __init__(self, mieru):
+  def __init__(self, repho):
     BasePlatform.__init__(self)
-    self.mieru = mieru
+    self.repho = repho
 
   def getIDString(self):
     return "harmattan"
 
   def notify(self, message, icon=""):
-    self.mieru.gui._notify(message, icon)
+    self.repho.gui._notify(message, icon)
 
   def getDefaultFileSelectorPath(self):
     """we default to the MyDocs folder as this is where most

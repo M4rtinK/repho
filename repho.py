@@ -15,7 +15,7 @@ timer.elapsed(startTs, "All modules combined")
 # set current directory to the directory
 # of this file
 # like this, RePho can be run from absolute path
-# eq.: ./opt/mieru/mieru.py -p harmattan -u harmattan
+# eq.: ./opt/repho/repho.py -p harmattan -u harmattan
 import os
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -29,7 +29,7 @@ class RePho:
 
   def destroy(self):
     self.options.save()
-    print "mieru quiting"
+    print "repho quiting"
     self.gui.stopMainLoop()
 
   def __init__(self):
@@ -174,4 +174,4 @@ class RePho:
     return modes
 
 if __name__ == "__main__":
-  mieru = RePho()
+  repho = RePho()

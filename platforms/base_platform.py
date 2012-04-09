@@ -37,7 +37,7 @@ class BasePlatform:
     self.showPagingDialog()
 
   def showPagingDialog(self):
-    manga = self.mieru.getActiveManga()
+    manga = self.repho.getActiveManga()
     if manga:
       self.pagingDialogBeforeOpen()
       paging_dialog.PagingDialog(manga)

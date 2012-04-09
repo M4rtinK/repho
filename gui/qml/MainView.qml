@@ -62,11 +62,16 @@ Page {
 
     Camera {
         id: camera
-        x: 0
+        //x: 0
         y: 0
+        anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width // - stillControls.buttonsPanelWidth
         height: parent.height
         focus: visible //to receive focus and capture key events
+        whiteBalanceMode: Camera.WhiteBalanceAuto
+        exposureCompensation: -1.0
+        state: Camera.ActiveState
+
         //captureResolution : "640x480"
 
         //flashMode: stillControls.flashMode

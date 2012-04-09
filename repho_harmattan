@@ -1,4 +1,4 @@
 #!/bin/sh
 
-# start Mieru with harmattan platform and GUI modules
-python mieru.py -p harmattan
+# start Repho with harmattan platform and GUI modules
+python repho.py -p harmattan

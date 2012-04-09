@@ -27,7 +27,7 @@ PageStackWindow {
             console.log("Error loading: " + component.errorString());
     }
 
-    // handle Mieru shutdown
+    // handle Repho shutdown
     function shutdown() {
         mainView.shutdown()
     }
@@ -69,7 +69,7 @@ PageStackWindow {
 
     QueryDialog {
         id : firstStartDialog
-        icon : "image://icons/mieru.svg"
+        icon : "image://icons/repho.svg"
         titleText : "How to turn pages"
         message : "Tap the <b>right half</b> of the screen to go to the <b>next page</b>.<br><br>"
               +" Tap the <b>left half</b> to go to the <b>previous page</b>."

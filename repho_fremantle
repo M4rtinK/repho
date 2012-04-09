@@ -1,5 +1,5 @@
 #!/bin/sh
 
-# start Mieru with fremantle platform module and
+# start Repho with fremantle platform module and
 # Qt Components (harmattan) GUI module
 python repho.py -p maemo5
