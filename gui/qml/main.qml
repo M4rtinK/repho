@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 import QtMultimediaKit 1.1
+import QtMobility.location 1.1
 
 PageStackWindow {
     showStatusBar : options.get("QMLShowStatusBar", false)
@@ -31,6 +32,15 @@ PageStackWindow {
         camera.start()
     }
 
+
+    PositionSource {
+            id: gpsSource
+            active: true
+            updateInterval: 1000
+            onPositionChanged: {
+                console.log("RePho position changed")
+            }
+    }
 
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value
