@@ -39,6 +39,8 @@ PageStackWindow {
     Component.onCompleted : {
         console.log("main component completed")
         //camera.start()
+        console.log(camera.cameraState)
+        console.log(camera.state)
     }
 
     /*
