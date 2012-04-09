@@ -2,61 +2,15 @@ import Qt 4.7
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
-import QtMultimediaKit 1.1
-import QtMobility.location 1.1
 
-//PageStackWindow {
-Window {
-    //showStatusBar : options.get("QMLShowStatusBar", false)
-    //showToolBar : true
+PageStackWindow {
+    showStatusBar : options.get("QMLShowStatusBar", false)
+    showToolBar : true
     id : rootWindow
-    //anchors.fill : parent
-    /*
+    anchors.fill : parent
     initialPage : MainView {
                       id : mainView
                       }
-    */
-    Rectangle {
-        id:           backgroundRectangle
-        anchors.fill: parent
-        rotation: screen.currentOrientation == 1 ? 90 : 0
-
-        Camera {
-                id: camera
-                anchors.fill : parent
-                focus: visible
-                flashMode : Camera.FlashOff;
-                //y: 0
-                //width: parent.width
-                //anchors.horizontalCenter: parent.horizontalCenter
-                //captureResolution: "1152x648"
-                //whiteBalanceMode: Camera.WhiteBalanceAuto
-                //exposureCompensation: -1.0
-                //state: (status == PageStatus.Active) ? Camera.ActiveState : Camera.LoadedState
-                //state: Camera.ActiveState
-                //cameraState: Camera.ActiveState
-        }
-    }
-
-    Component.onCompleted : {
-        console.log("main component completed")
-        //camera.start()
-        console.log(camera.cameraState)
-        console.log(camera.state)
-        console.log(Camera.LoadedState)
-        console.log(Camera.ActiveState)
-    }
-
-    /*
-    PositionSource {
-            id: gpsSource
-            active: true
-            updateInterval: 1000
-            onPositionChanged: {
-                console.log("RePho position changed")
-            }
-    }*/
-
 
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value
@@ -73,7 +27,7 @@ Window {
             console.log("Error loading: " + component.errorString());
     }
 
-    // handle Repho shutdown
+    // handle Mieru shutdown
     function shutdown() {
         mainView.shutdown()
     }
@@ -82,8 +36,6 @@ Window {
     function openFirstStartDialog() {
         firstStartDialog.open()
     }
-
-    /*
 
     FileSelector {
       id: fileSelector;
@@ -117,7 +69,7 @@ Window {
 
     QueryDialog {
         id : firstStartDialog
-        icon : "image://icons/repho.svg"
+        icon : "image://icons/mieru.svg"
         titleText : "How to turn pages"
         message : "Tap the <b>right half</b> of the screen to go to the <b>next page</b>.<br><br>"
               +" Tap the <b>left half</b> to go to the <b>previous page</b>."
@@ -127,5 +79,4 @@ Window {
             options.set("QMLShowFirstStartDialog", false)
         }
     }
-    */
 }
