@@ -60,24 +60,24 @@ Page {
       restoreRotation()
     }
 
-    /*
+
     Rectangle {
         anchors.fill : parent
         color : "black"
     }
 
-
     Camera {
         id: camera
         //x: 0
         y: 0
-        captureResolution: "1152x648"
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width // - stillControls.buttonsPanelWidth
-        height: parent.height
+        anchors.fill:parent
+        //captureResolution: "1152x648"
+        //anchors.horizontalCenter: parent.horizontalCenter
+        //width: parent.width // - stillControls.buttonsPanelWidth
+        //height: parent.height
         focus: true //to receive focus and capture key events
         whiteBalanceMode: Camera.WhiteBalanceAuto
-        exposureCompensation: -1.0
+        //exposureCompensation: -1.0
         state: Camera.ActiveState
         visible : true
 
@@ -95,7 +95,6 @@ Page {
             //cameraUI.state = "PhotoPreview"
         }
     }
-    */
 
     /** Toolbar **/
 
