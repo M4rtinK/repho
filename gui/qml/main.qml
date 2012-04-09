@@ -10,29 +10,38 @@ PageStackWindow {
     showToolBar : true
     id : rootWindow
     anchors.fill : parent
+    /*
     initialPage : MainView {
                       id : mainView
                       }
-
+    */
     Rectangle {
         id:           backgroundRectangle
         anchors.fill: parent
-        color:        "red"
+        color:        "black"
 
         Camera {
-            id:                camera
-            anchors.centerIn:  parent
-            width:             480
-            height:            360
-            captureResolution: "480x360"
+                id: camera
+                y: 0
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                captureResolution: "1152x648"
+                focus: visible
+                whiteBalanceMode: Camera.WhiteBalanceAuto
+                exposureCompensation: -1.0
+                //state: (status == PageStatus.Active) ? Camera.ActiveState : Camera.LoadedState
+                state: Camera.ActiveState
         }
+
+
     }
 
     Component.onCompleted : {
-        camera.start()
+        console.log("main component completed")
+        //camera.start()
     }
 
-
+    /*
     PositionSource {
             id: gpsSource
             active: true
@@ -40,7 +49,7 @@ PageStackWindow {
             onPositionChanged: {
                 console.log("RePho position changed")
             }
-    }
+    }*/
 
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value
