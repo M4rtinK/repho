@@ -36,10 +36,10 @@ class QMLGUI(gui.GUI):
     # try OpenGl acceleration
     glw = QtOpenGL.QGLWidget()
     self.view.setViewport(glw)
-    self.window = QMainWindow()
-    self.window.resize(*size)
-    self.window.setCentralWidget(self.view)
-    self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
+#    self.window = QMainWindow()
+#    self.window.resize(*size)
+#    self.window.setCentralWidget(self.view)
+#    self.view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
 #    self.view.setResizeMode(QDeclarativeView.SizeViewToRootObject)
 
     # add image providers
@@ -79,8 +79,8 @@ class QMLGUI(gui.GUI):
 
     # Set the QML file and show it
     self.view.setSource(url)
-    self.window.closeEvent = self._qtWindowClosed
-    self.window.show()
+#    self.window.closeEvent = self._qtWindowClosed
+#    self.window.show()
 
     self.rootObject = self.view.rootObject()
 
@@ -103,6 +103,7 @@ class QMLGUI(gui.GUI):
     return "QML"
 
   def toggleFullscreen(self):
+    return
     if self.window.isFullScreen():
       self.window.showNormal()
     else:
@@ -116,6 +117,7 @@ class QMLGUI(gui.GUI):
 #    mv.restoreContentShift()
 
     # start main loop
+    self.view.showFullScreen()
     self.app.exec_()
 
   def _qtWindowClosed(self, event):
@@ -128,7 +130,7 @@ class QMLGUI(gui.GUI):
     """NOTE: due to calling Python properties
     from onDestruction handlers causing
     segfault, we need this"""
-    self.rootObject.shutdown()
+    #self.rootObject.shutdown()
 
     # quit the application
     self.app.exit()

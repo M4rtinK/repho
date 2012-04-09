@@ -18,22 +18,23 @@ PageStackWindow {
     Rectangle {
         id:           backgroundRectangle
         anchors.fill: parent
-        color:        "black"
+        rotation: screen.currentOrientation == 1 ? 90 : 0
 
         Camera {
                 id: camera
-                y: 0
-                width: parent.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                captureResolution: "1152x648"
+                anchors.fill : parent
                 focus: visible
-                whiteBalanceMode: Camera.WhiteBalanceAuto
-                exposureCompensation: -1.0
+                flashMode : Camera.FlashOff;
+                //y: 0
+                //width: parent.width
+                //anchors.horizontalCenter: parent.horizontalCenter
+                //captureResolution: "1152x648"
+                //whiteBalanceMode: Camera.WhiteBalanceAuto
+                //exposureCompensation: -1.0
                 //state: (status == PageStatus.Active) ? Camera.ActiveState : Camera.LoadedState
-                state: Camera.ActiveState
+                //state: Camera.ActiveState
+                //cameraState: Camera.ActiveState
         }
-
-
     }
 
     Component.onCompleted : {
@@ -41,6 +42,8 @@ PageStackWindow {
         //camera.start()
         console.log(camera.cameraState)
         console.log(camera.state)
+        console.log(Camera.LoadedState)
+        console.log(Camera.ActiveState)
     }
 
     /*
