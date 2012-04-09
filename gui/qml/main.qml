@@ -5,11 +5,12 @@ import com.nokia.extras 1.0
 import QtMultimediaKit 1.1
 import QtMobility.location 1.1
 
-PageStackWindow {
-    showStatusBar : options.get("QMLShowStatusBar", false)
-    showToolBar : true
+//PageStackWindow {
+Window {
+    //showStatusBar : options.get("QMLShowStatusBar", false)
+    //showToolBar : true
     id : rootWindow
-    anchors.fill : parent
+    //anchors.fill : parent
     /*
     initialPage : MainView {
                       id : mainView
@@ -56,6 +57,7 @@ PageStackWindow {
             }
     }*/
 
+
     property int statusBarHeight : 36
     /* TODO: replace hardcoded value
     with actual status bar height */
@@ -80,6 +82,8 @@ PageStackWindow {
     function openFirstStartDialog() {
         firstStartDialog.open()
     }
+
+    /*
 
     FileSelector {
       id: fileSelector;
@@ -123,4 +127,5 @@ PageStackWindow {
             options.set("QMLShowFirstStartDialog", false)
         }
     }
+    */
 }
