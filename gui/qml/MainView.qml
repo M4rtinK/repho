@@ -65,7 +65,6 @@ Page {
     Rectangle {
         anchors.fill : parent
         color : "black"
-        rotation: screen.currentOrientation == 1 ? 90 :0
     }
 
     Camera {
@@ -75,7 +74,8 @@ Page {
         rotation: screen.currentOrientation == 1 ? 90 :0
         //anchors.fill:parent
         captureResolution: "1152x648"
-        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenter: parent.verticalCenter
         //width: parent.width // - stillControls.buttonsPanelWidth
         //height: parent.height
         focus: visible //to receive focus and capture key events
