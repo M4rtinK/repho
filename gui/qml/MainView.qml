@@ -67,10 +67,11 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width // - stillControls.buttonsPanelWidth
         height: parent.height
-        focus: visible //to receive focus and capture key events
+        focus: true //to receive focus and capture key events
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
         state: Camera.ActiveState
+        visible : true
 
         //captureResolution : "640x480"
 
