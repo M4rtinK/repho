@@ -6,9 +6,9 @@ import com.nokia.extras 1.0
 import QtMultimediaKit 1.1
 
 Page {
-    id : mainView
+    id : oView
     //orientationLock: PageOrientation.LockLandscape
-    objectName : "mainView"
+    objectName : "oView"
     anchors.fill : parent
     tools : mainViewToolBar
 
@@ -35,24 +35,24 @@ Page {
     function restoreRotation() {
         var savedRotation = options.get("QMLmainViewRotation", "auto")
         if ( savedRotation == "auto" ) {
-            mainView.orientationLock = PageOrientation.Automatic
+            oView.orientationLock = PageOrientation.Automatic
         } else if ( savedRotation == "portrait" ) {
-            mainView.orientationLock = PageOrientation.LockPortrait
+            oView.orientationLock = PageOrientation.LockPortrait
         } else {
-            mainView.orientationLock = PageOrientation.LockLandscape
+            oView.orientationLock = PageOrientation.LockLandscape
         }
     }
 
     function showPrevFeedback() {
     // only show with feedback enabled and no feedback in progress
-        if (mainView.pagingFeedback && !prevFbTimer.running) {
+        if (oView.pagingFeedback && !prevFbTimer.running) {
             prevFbTimer.start()
         }
     }
 
     function showNextFeedback() {
     // only show with feedback enabled and no feedback in progress
-        if (mainView.pagingFeedback && !nextFbTimer.running) {
+        if (oView.pagingFeedback && !nextFbTimer.running) {
             nextFbTimer.start()
         }
     }
@@ -98,6 +98,15 @@ Page {
         }
     }
 
+    /** Image overlay **/
+
+    Image {
+        id : oldImage
+        anchors.fill : parent
+        fillMode : Image.PreserveAspectFit
+        source : rootWindow.oldImageURL
+    }
+
     /** Toolbar **/
 
     ToolBarLayout {
@@ -116,7 +125,7 @@ Page {
         }
         //ToolIcon { iconId: "toolbar-previous" }
         ToolButton { id : pageNumbers
-                     text : mainView.pageLoaded ? mainView.pageNumber + "/" + mainView.maxPageNumber : "-/-"
+                     text : oView.pageLoaded ? oView.pageNumber + "/" + oView.maxPageNumber : "-/-"
                      anchors.top : backTI.top
                      anchors.bottom : backTI.bottom
                      flat : true
@@ -128,8 +137,8 @@ Page {
                    iconId: platform.incompleteTheme() ?
                    "icon-m-common-next" : "toolbar-down"
                    rotation : platform.incompleteTheme() ? 90 : 0
-                   onClicked: mainView.toggleFullscreen() }
-        //ToolIcon { iconSource: "image://icons/view-normal.png"; onClicked: mainView.toggleFullscreen() }
+                   onClicked: oView.toggleFullscreen() }
+        //ToolIcon { iconSource: "image://icons/view-normal.png"; onClicked: oView.toggleFullscreen() }
         }
 
     /** Main menu **/
@@ -147,6 +156,13 @@ Page {
 
             MenuItem {
                 text : "Open from gallery"
+                onClicked : {
+                    //rootWindow.openFile("HistoryPage.qml")
+                    }
+            }
+
+            MenuItem {
+                text : "Open URL"
                 onClicked : {
                     //rootWindow.openFile("HistoryPage.qml")
                     }
@@ -214,7 +230,8 @@ Page {
     Label {
         anchors.centerIn : parent
         text : "<h1>No pages loaded</h1>"
-        visible : !mainView.pageLoaded
+        color: "white"
+        visible : oldImage.source == ""
     }
 
     /** Paging feedback **/

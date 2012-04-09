@@ -8,13 +8,15 @@ PageStackWindow {
     showToolBar : true
     id : rootWindow
     anchors.fill : parent
-    initialPage : MainView {
+    initialPage : OverlayView {
                       id : mainView
                       }
 
     property int statusBarHeight : 36
+
     /* TODO: replace hardcoded value
     with actual status bar height */
+    property string oldImageURL: "" // current old image
 
     // ** Open a page and push it in the stack
     function openFile(file) {
@@ -40,7 +42,7 @@ PageStackWindow {
     FileSelector {
       id: fileSelector;
       //anchors.fill : rootWindow
-      onAccepted: readingState.openManga(selectedFile);
+      onAccepted: oldImageURL = selectedFile
     }
 
     OverlayMenu {
