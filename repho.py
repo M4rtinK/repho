@@ -174,4 +174,9 @@ class RePho:
     return modes
 
 if __name__ == "__main__":
-  repho = RePho()
+  os.chdir("/home/user/software/repho")
+  sys.path.append("/home/user/software/repho")
+  #from modrana import ModRana
+  from repho import RePho as RP
+#  repho = RePho()
+  repho = RP()
