@@ -179,7 +179,8 @@ if __name__ == "__main__":
   #sys.path.append("/home/user/software/repho")
   #from modrana import ModRana
   #from repho import RePho as RP
-#  repho = RePho()
+  repho = RePho()
   #repho = RP()
-  subprocess.call(["/home/user/software/repho/_repho.py", "-p", "harmattan"])
+  #subprocess.call(["/home/user/software/repho/repho.py", "-p", "harmattan"])
+
 
