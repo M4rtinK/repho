@@ -81,9 +81,10 @@ PageStackWindow {
     QueryDialog {
         id : firstStartDialog
         icon : "image://icons/repho.svg"
-        titleText : "How to turn pages"
-        message : "Tap the <b>right half</b> of the screen to go to the <b>next page</b>.<br><br>"
-              +" Tap the <b>left half</b> to go to the <b>previous page</b>."
+        titleText : "How to use repho"
+        message : "<b>Open</b> an <b>old image</b>.<br>"
+              +"Take a picture <b>of the place on the image</b>.<br>"
+              +"Compare the <b>old image</b> with the <b>new one</b>."
         acceptButtonText : "Don't show again"
         rejectButtonText : "OK"
         onAccepted: {
