@@ -131,13 +131,12 @@ Page {
                 }
             }
         }
-        //ToolIcon { iconId: "toolbar-previous" }
-        ToolButton { id : pageNumbers
-                     text : oView.pageLoaded ? oView.pageNumber + "/" + oView.maxPageNumber : "-/-"
-                     anchors.top : backTI.top
-                     anchors.bottom : backTI.bottom
-                     flat : true
-                     onClicked : { pagingDialog.open() }
+        ToolIcon {
+            iconId : "toolbar-settings"
+            //anchors.top : backTI.top
+            //anchors.bottom : backTI.bottom
+            //flat : true
+            onClicked : { pagingDialog.open() }
         }
         ToolIcon {
             iconId: ""
