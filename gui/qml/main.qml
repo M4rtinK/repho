@@ -40,9 +40,18 @@ PageStackWindow {
     }
 
     FileSelector {
-      id: fileSelector;
-      //anchors.fill : rootWindow
-      onAccepted: oldImageURL = selectedFile
+        id: fileSelector;
+        //anchors.fill : rootWindow
+        onAccepted: {
+            console.log("File selector accepted")
+            /*
+            console.log(selectedFile)
+            options.set('lastChooserFolder', selectedFile)
+            console.log(options.get('lastChooserFolder'))
+            */
+            repho.fileOpened(selectedFile)
+            oldImageURL = selectedFile
+        }
     }
 
     OverlayMenu {

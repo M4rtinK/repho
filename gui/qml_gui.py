@@ -263,19 +263,26 @@ class Repho(QObject):
     self.gui.toggleFullscreen()
 
   @QtCore.Slot(str)
-  def openManga(self, path):
-    print "Open manga"
+  def fileOpened(self, path):
     # remove the "file:// part of the path"
     path = re.sub('file://', '', path, 1)
     folder = os.path.dirname(path)
     self.repho.set('lastChooserFolder', folder)
-    self.repho.openManga(path)
+    #TODO: check if it is an image before saving
+    self.repho.set('lastFile', path)
 
   @QtCore.Slot(result=str)
   def getSavedFileSelectorPath(self):
     defaultPath = self.repho.platform.getDefaultFileSelectorPath()
     lastFolder = self.repho.get('lastChooserFolder', defaultPath)
     return lastFolder
+
+  @QtCore.Slot(result=str)
+  def getSavedFilePath(self):
+    defaultPath = ""
+    lastFilePath = self.repho.get('lastFile', defaultPath)
+    return lastFilePath
+
 
   @QtCore.Slot()
   def updateHistoryListModel(self):

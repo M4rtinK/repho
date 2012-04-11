@@ -11,6 +11,7 @@ Page {
     objectName : "oView"
     anchors.fill : parent
     tools : mainViewToolBar
+    property real overlayOpacity : 0.5
 
     // workaround for calling python properties causing segfaults
     function shutdown() {
@@ -73,8 +74,8 @@ Page {
         y: 0
         rotation: screen.currentOrientation == 1 ? 90 :0
         //anchors.fill:parent
-        //captureResolution: "1200x675"
-        captureResolution: "1152x648"
+        captureResolution: "1200x675"
+        //captureResolution: "1152x648"
         //captureResolution: "1000x480"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -103,10 +104,12 @@ Page {
     /** Image overlay **/
 
     Image {
-        id : oldImage
+        visible : true
+        id : oldImage2
         anchors.fill : parent
         fillMode : Image.PreserveAspectFit
         source : rootWindow.oldImageURL
+        opacity : overlayOpacity
     }
 
     /** Toolbar **/
@@ -145,86 +148,8 @@ Page {
 
     /** Main menu **/
 
-    Menu {
+    MainMenu {
         id : mainViewMenu
-        MenuLayout {
-            MenuItem {
-              text : "Open from file"
-              onClicked : {
-                  //fileSelector.down(readingState.getSavedFileSelectorPath());
-                  fileSelector.open();
-            }
-        }
-
-            MenuItem {
-                text : "Open from gallery"
-                onClicked : {
-                    //rootWindow.openFile("HistoryPage.qml")
-                    }
-            }
-
-            MenuItem {
-                text : "Open URL"
-                onClicked : {
-                    //rootWindow.openFile("HistoryPage.qml")
-                    }
-            }
-
-            MenuItem {
-                text : "Options"
-                onClicked : {
-                    rootWindow.openFile("OptionsPage.qml")
-                    }
-            }
-
-            MenuItem {
-                text : "About"
-                onClicked : {
-                    rootWindow.openFile("InfoPage.qml")
-                }
-            }
-        }
-    }
-
-    Menu {
-        id : mainViewMenuWithQuit
-        MenuLayout {
-            MenuItem {
-              text : "Open file"
-              onClicked : {
-                  fileSelector.down(readingState.getSavedFileSelectorPath());
-                  fileSelector.open();
-            }
-        }
-
-            MenuItem {
-                text : "History"
-                onClicked : {
-                    rootWindow.openFile("HistoryPage.qml")
-                    }
-            }
-
-            MenuItem {
-                text : "Info"
-                onClicked : {
-                    rootWindow.openFile("InfoPage.qml")
-                }
-            }
-
-            MenuItem {
-                text : "Options"
-                onClicked : {
-                    rootWindow.openFile("OptionsPage.qml")
-                    }
-            }
-
-            MenuItem {
-                text : "Quit"
-                onClicked : {
-                    readingState.quit()
-                    }
-            }
-        }
     }
 
     /** No pages loaded label **/
