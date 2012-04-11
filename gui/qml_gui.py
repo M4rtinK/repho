@@ -45,9 +45,9 @@ class QMLGUI(gui.GUI):
 
     # add image providers
 #    self.pageProvider = MangaPageImageProvider(self)
-#    self.iconProvider = IconImageProvider()
+    self.iconProvider = IconImageProvider()
 #    self.view.engine().addImageProvider("page",self.pageProvider)
-#    self.view.engine().addImageProvider("icons",self.iconProvider)
+    self.view.engine().addImageProvider("icons",self.iconProvider)
     rc = self.view.rootContext()
     # make the main context accessible from QML
     rc.setContextProperty("repho", Repho(self))
@@ -186,6 +186,8 @@ class IconImageProvider(QDeclarativeImageProvider):
       QDeclarativeImageProvider.__init__(self, QDeclarativeImageProvider.ImageType.Image)
 
   def requestImage(self, iconFilename, size, requestedSize):
+    print "IMAGE"
+    print iconFilename
     try:
       f = open('icons/%s' % iconFilename,'r')
       img=QImage()
