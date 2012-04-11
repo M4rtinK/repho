@@ -75,8 +75,8 @@ Page {
         y: 0
         rotation: screen.currentOrientation == 1 ? 90 :0
         //anchors.fill:parent
-        captureResolution: "1200x675"
-        //captureResolution: "1152x648"
+        //captureResolution: "1200x675"
+        captureResolution: "1152x648"
         //captureResolution: "1000x480"
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
@@ -159,19 +159,36 @@ Page {
 
     /** Camera button **/
     Button {
-        id : shutter
+        id : shutterL
         width : 160
         height : 100
+        visible : screen.currentOrientation != 1
         anchors.verticalCenter : parent.verticalCenter
         anchors.right : parent.right
         anchors.rightMargin : 16
+        opacity : 0.7
+        iconSource : "image://theme/icon-m-content-camera"
+        onClicked : {
+            console.log("shutter pressed")
+            camera.captureImage()
+        }
+    }
+
+    Button {
+        id : shutterP
+        width : 160
+        height : 100
+        visible : screen.currentOrientation == 1
+        anchors.horizontalCenter : parent.horizontalCenter
+        anchors.bottom : parent.bottom
+        anchors.bottomMargin : 16
 
 
         opacity : 0.7
         iconSource : "image://theme/icon-m-content-camera"
         onClicked : {
             console.log("shutter pressed")
-            camera.start()
+            camera.captureImage()
         }
     }
 

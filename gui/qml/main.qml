@@ -31,7 +31,7 @@ PageStackWindow {
 
     // handle Mieru shutdown
     function shutdown() {
-        mainView.shutdown()
+        oView.shutdown()
     }
 
     // open dialog with information about how to turn pages
