@@ -69,15 +69,17 @@ Page {
 
     Camera {
         id: camera
-        x: 0
+        //x: 0
         y: 0
         rotation: screen.currentOrientation == 1 ? 90 :0
         //anchors.fill:parent
+        //captureResolution: "1200x675"
         captureResolution: "1152x648"
-        //anchors.horizontalCenter: parent.horizontalCenter
-        //anchors.verticalCenter: parent.verticalCenter
-        //width: parent.width // - stillControls.buttonsPanelWidth
-        //height: parent.height
+        //captureResolution: "1000x480"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        //width: parent.height // - stillControls.buttonsPanelWidth
+        //height: parent.width
         focus: visible //to receive focus and capture key events
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
@@ -229,7 +231,8 @@ Page {
 
     Label {
         anchors.centerIn : parent
-        text : "<h1>No pages loaded</h1>"
+        //text : "<h1>No pages loaded</h1>"
+        text : "<h1>No old image loaded</h1>"
         color: "white"
         visible : oldImage.source == ""
     }
