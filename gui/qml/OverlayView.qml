@@ -12,6 +12,7 @@ Page {
     anchors.fill : parent
     tools : mainViewToolBar
     property real overlayOpacity : 0.5
+    property int overlayRotation : 0
 
     // workaround for calling python properties causing segfaults
     function shutdown() {
@@ -105,7 +106,8 @@ Page {
 
     Image {
         visible : true
-        id : oldImage2
+        id : oldImage
+        rotation : overlayRotation
         anchors.fill : parent
         fillMode : Image.PreserveAspectFit
         source : rootWindow.oldImageURL

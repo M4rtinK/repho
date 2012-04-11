@@ -5,67 +5,73 @@ import com.nokia.extras 1.0
 Menu {
     id : pagingDialog
     MenuLayout {
+
         //width : pagingDialog.width
         id : mLayout
+        Label {
+            text: "<b>Overlay opacity</b>"
+        }
         Row {
             //anchors.left : mLayout.left
             //anchors.right : mLayout.right
             Slider {
-                id : pagingSlider
-                width : mLayout.width*0.9
-                //anchors.topMargin : height*0.5
-                //anchors.left : mLayout.left
-                maximumValue: mainView.maxPageNumber
-                minimumValue: 1
-                value: mainView.pageNumber
-                stepSize: 1
-                valueIndicatorVisible: false
-                //orientation : Qt.Vertical
+                id : overlaySlider
+                value : oView.overlayOpacity
+                minimumValue: 0.0
+                maximumValue: 1.0
+                stepSize: 0.01
+                valueIndicatorText : Math.round(value*100) + " %"
+                valueIndicatorVisible: true
                 onPressedChanged : {
-                    //only load the page once the user stopped dragging to save resources
-                    mainView.pageNumber = value
+                    var outputValue
+                    //completely transparent items don't receive events
+                    if (value == 0) {
+                        outputValue = 0.01
+                    } else {
+                        /* round away small fractions
+                        that were created by the assured lowest value
+                        */
+                        outputValue = Math.round(value*100)/100
+                    }
+                    //update once dragging stops
+                    //options.set("QMLFullscreenButtonOpacity", outputValue)
+                    oView.overlayOpacity = outputValue
                 }
+
             }
-            CountBubble {
-                //width : mLayout.width*0.2
-                //anchors.left : pagingSlider.right
-                //anchors.right : mLayout.right
-                value : pagingSlider.value
-                largeSized : true
-            }
+        }
+        Label {
+            text: "<b>Rotation</b>"
         }
         Row {
             id : mButtonRow
             property int usableWidth : mLayout.width - 10
             spacing : 10
             Button {
-                text : mainView.pageFitMode
-                iconSource : "image://theme/icon-m-common-expand"
-                width : mButtonRow.usableWidth/2.0
-                onClicked : {
-                    pageFitSelector.open()
-                }
-            }
-            Button {
-                text : "rotation"
+                id : screenRLock
+                text : "screen"
                 iconSource : "image://theme/icon-m-common-" + __iconType
                 width : mButtonRow.usableWidth/2.0
-                property string __iconType: (mainView.orientationLock == PageOrientation.LockPrevious) ? "locked" : "unlocked"
+                property string __iconType: (oView.orientationLock == PageOrientation.LockPrevious) ? "locked" : "unlocked"
 
                 onClicked: {
-                    if (mainView.orientationLock == PageOrientation.LockPrevious) {
-                        mainView.orientationLock = PageOrientation.Automatic
+                    if (oView.orientationLock == PageOrientation.LockPrevious) {
+                        oView.orientationLock = PageOrientation.Automatic
                     } else {
-                        mainView.orientationLock = PageOrientation.LockPrevious
+                        oView.orientationLock = PageOrientation.LockPrevious
                     }
                 }
             }
-            /*
-            platformIconId: "icon-m-common-" + __iconType + __inverseString
 
-            property string __inverseString: style.inverted ? "-inverse" : ""
-            */
-
+            Button {
+                id : imageRotationB
+                text : "image"
+                iconSource : "image://theme/icon-m-toolbar-refresh1"
+                width : mButtonRow.usableWidth/2.0
+                onClicked: {
+                    oView.overlayRotation = (oView.overlayRotation+90)%360
+                }
+            }
         }
     }
 }

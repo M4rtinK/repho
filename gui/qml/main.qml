@@ -9,7 +9,7 @@ PageStackWindow {
     id : rootWindow
     anchors.fill : parent
     initialPage : OverlayView {
-                      id : mainView
+                      id : oView
                       }
 
     property int statusBarHeight : 36
