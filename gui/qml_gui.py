@@ -1,4 +1,6 @@
 """a QML GUI module for Repho"""
+import glob
+import shutil
 
 import sys
 import re
@@ -8,6 +10,8 @@ from PySide.QtCore import *
 from PySide.QtGui import *
 from PySide.QtDeclarative import *
 #from PySide import QtOpenGL
+import datetime
+import time
 
 import gui
 import info
@@ -203,6 +207,8 @@ class Repho(QObject):
     QObject.__init__(self)
     self.gui = gui
     self.repho = gui.repho
+    self.currentFolder = None
+    self.oldImageFilename = None
 
   @QtCore.Slot(result=str)
   def next(self):
@@ -230,21 +236,6 @@ class Repho(QObject):
     else:
       return "ERROR no active manga"
 
-  @QtCore.Slot(int)
-  def goToPage(self, pageNumber):
-    activeManga = self.gui.repho.getActiveManga()
-    if activeManga:
-      id = activeManga.PageNumber2ID(pageNumber)
-      activeManga.gotoPageId(id)
-
-  @QtCore.Slot(int, str)
-  def setPageID(self, pageID, mangaPath):
-    activeManga = self.gui.repho.getActiveManga()
-    if activeManga:
-      # filter out false alarms
-      if activeManga.getPath() == mangaPath:
-        activeManga.setActivePageId(pageID)
-
   @QtCore.Slot(result=str)
   def getPrettyName(self):
     activeManga = self.gui.repho.getActiveManga()
@@ -270,15 +261,65 @@ class Repho(QObject):
     # remove the "file:// part of the path"
     path = re.sub('file://', '', path, 1)
     folder = os.path.dirname(path)
+    filename = os.path.basename(path)
     self.repho.set('lastChooserFolder', folder)
     #TODO: check if it is an image before saving
     self.repho.set('lastFile', path)
+    self.currentFolder = folder
+    self.oldImageFilename = filename
 
   @QtCore.Slot(result=str)
   def getSavedFileSelectorPath(self):
     defaultPath = self.repho.platform.getDefaultFileSelectorPath()
     lastFolder = self.repho.get('lastChooserFolder', defaultPath)
+
     return lastFolder
+
+  @QtCore.Slot(str,result=bool)
+  def storeImage(self, capturedImagePath):
+    today = datetime.date.today()
+
+    # zero padding
+    if today.day < 10:
+      day = "0%d" % today.day
+    else:
+      day = "%s" % today.day
+
+    if today.month < 10:
+      month = "0%d" % today.month
+    else:
+      month = "%s" % today.month
+
+    #TODO: zero padding for years
+
+
+
+
+#    dateString = str(today.year) + month + day
+    dateString = str(int(time.time()))
+    newFilename = "%s_repho_%s.jpg" % (self.oldImageFilename, dateString)
+
+#    list = glob.glob(os.path.join(self.currentFolder,"%s*" % newFilename))
+#    print list
+#    if list:
+#
+#      numericList = map(lambda x: (x.split(newFilename)[1]),list)
+#      numericList = map(lambda x: int(x.split(newFilename)[1]),list)
+#      print numericList
+#      highestNumber = sorted(numericList)[-1]
+#      newHighestNumber = highestNumber + 1
+#    else:
+#      newHighestNumber = 0
+#
+#    newFilename+= str(newHighestNumber).zfill(3)
+#    newFilename+= ".jpg"
+
+    savedImagePath = os.path.join(self.currentFolder, newFilename)
+
+
+    shutil.move(capturedImagePath, savedImagePath)
+    print savedImagePath
+    self.gui._notify("Saved as:<br><b>%s</b>" % newFilename)
 
   @QtCore.Slot(result=str)
   def getSavedFilePath(self):

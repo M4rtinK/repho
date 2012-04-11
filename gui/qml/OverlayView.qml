@@ -100,6 +100,11 @@ Page {
             //stillControls.previewAvailable = true
             //cameraUI.state = "PhotoPreview"
         }
+
+        onImageSaved : {
+            console.log(capturedImagePath)
+            repho.storeImage(capturedImagePath)
+        }
     }
 
     /** Image overlay **/
@@ -163,6 +168,7 @@ Page {
         width : 160
         height : 100
         visible : screen.currentOrientation != 1
+        enabled : oldImage.source != ""
         anchors.verticalCenter : parent.verticalCenter
         anchors.right : parent.right
         anchors.rightMargin : 16
@@ -179,6 +185,7 @@ Page {
         width : 160
         height : 100
         visible : screen.currentOrientation == 1
+        enabled : oldImage.source != ""
         anchors.horizontalCenter : parent.horizontalCenter
         anchors.bottom : parent.bottom
         anchors.bottomMargin : 16
