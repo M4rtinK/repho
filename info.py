@@ -22,7 +22,7 @@ def getVersionString():
       f = open(versionFilePath, 'r')
       versionString = f.read()
       f.close()
-      # is it really string ?
+      # is it really a string ?
       versionString = str(versionString)
 
     except Exception, e:
