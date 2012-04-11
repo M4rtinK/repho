@@ -110,6 +110,9 @@ Page {
         fillMode : Image.PreserveAspectFit
         source : rootWindow.oldImageURL
         opacity : overlayOpacity
+        smooth : true
+        sourceSize.width : 854
+        sourceSize.height : 480
     }
 
     /** Toolbar **/
