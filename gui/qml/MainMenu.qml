@@ -40,7 +40,7 @@ Menu {
         MenuItem {
             text : "About"
             onClicked : {
-                rootWindow.openFile("InfoPage.qml")
+                rootWindow.openFile("AboutPage.qml")
             }
         }
     }

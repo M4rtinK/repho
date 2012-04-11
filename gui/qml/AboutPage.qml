@@ -13,7 +13,7 @@ Page {
     Label {
         id : aboutTitle
         anchors.horizontalCenter : parent.horizontalCenter
-        text: "<b>RePho</b>" + " " + readingState.getVersionString()
+        text: "<b>RePho</b>" + " " + repho.getVersionString()
         //font.pointSize: 24
     }
     Image {
@@ -28,7 +28,7 @@ Page {
         anchors.horizontalCenter : parent.horizontalCenter
         //anchors.topMargin : 10
         anchors.top : aboutRephoIcon.bottom
-        text: "<style type='text/css'>p { margin-bottom:15px; margin-top:0px; }</style>" + readingState.getAboutText()
+        text: "<style type='text/css'>p { margin-bottom:15px; margin-top:0px; }</style>" + repho.getAboutText()
 
         onLinkActivated : {
             console.log('about text link clicked: ' + link)

@@ -10,6 +10,7 @@ from PySide.QtDeclarative import *
 #from PySide import QtOpenGL
 
 import gui
+import info
 
 def newlines2brs(text):
   """ QML uses <br> instead of \n for linebreak """
