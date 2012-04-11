@@ -136,7 +136,7 @@ Page {
             //anchors.top : backTI.top
             //anchors.bottom : backTI.bottom
             //flat : true
-            onClicked : { pagingDialog.open() }
+            onClicked : { overlayMenu.open() }
         }
         ToolIcon {
             iconId: ""
@@ -147,6 +147,11 @@ Page {
 
     MainMenu {
         id : mainViewMenu
+    }
+
+    /** Overlay menu **/
+    OverlayMenu {
+        id : overlayMenu
     }
 
 
