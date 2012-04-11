@@ -160,7 +160,7 @@ Page {
     Label {
         anchors.centerIn : parent
         //text : "<h1>No pages loaded</h1>"
-        text : "<h1>No old image loaded</h1>"
+        text : "<h2>No old image loaded</h2>"
         color: "white"
         visible : oldImage.source == ""
     }
