@@ -139,21 +139,36 @@ Page {
                      flat : true
                      onClicked : { pagingDialog.open() }
         }
-        //ToolIcon { iconId: "toolbar-next" }
-        ToolIcon { //iconId: "toolbar-down"
-                   // fix for incomplete theme on Fremantle
-                   iconId: platform.incompleteTheme() ?
-                   "icon-m-common-next" : "toolbar-down"
-                   rotation : platform.incompleteTheme() ? 90 : 0
-                   onClicked: oView.toggleFullscreen() }
-        //ToolIcon { iconSource: "image://icons/view-normal.png"; onClicked: oView.toggleFullscreen() }
+        ToolIcon {
+            iconId: ""
         }
+    }
 
     /** Main menu **/
 
     MainMenu {
         id : mainViewMenu
     }
+
+
+    /** Camera button **/
+    Button {
+        id : shutter
+        width : 160
+        height : 100
+        anchors.verticalCenter : parent.verticalCenter
+        anchors.right : parent.right
+        anchors.rightMargin : 16
+
+
+        opacity : 0.7
+        iconSource : "image://theme/icon-m-content-camera"
+        onClicked : {
+            console.log("shutter pressed")
+            camera.start()
+        }
+    }
+
 
     /** No pages loaded label **/
 
@@ -231,4 +246,6 @@ Page {
             nextFeedback.visible = !nextFeedback.visible
         }
     }
+
+
 }
