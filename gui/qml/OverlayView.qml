@@ -11,8 +11,11 @@ Page {
     objectName : "oView"
     anchors.fill : parent
     tools : mainViewToolBar
+
+    property bool shutterVisible : false
     property real overlayOpacity : 0.5
     property int overlayRotation : 0
+
 
     // workaround for calling python properties causing segfaults
     function shutdown() {
@@ -63,6 +66,40 @@ Page {
       restoreRotation()
     }
 
+    state : "noImage"
+
+    states: [
+        State {
+            name : "noImage"
+            StateChangeScript {
+                script : {
+                    shutterVisible = false
+                    imagePreview.visible = false
+                    previewMA.visible = false
+                }
+            }
+        },
+        State {
+            name : "imageCapture"
+            StateChangeScript {
+                script : {
+                    shutterVisible = true
+                    imagePreview.visible = false
+                    previewMA.visible = false
+                }
+            }
+        },
+        State {
+            name : "imagePreview"
+            StateChangeScript {
+                script : {
+                    shutterVisible = false
+                    imagePreview.visible = true
+                    previewMA.visible = true
+                }
+            }
+        }
+    ]
 
     Rectangle {
         anchors.fill : parent
@@ -95,15 +132,32 @@ Page {
 
         onImageCaptured : {
             console.log("image captured")
-            console.log(preview)
-            //photoPreview.source = preview
+            imagePreview.source = preview
+            oView.state = "imagePreview"
             //stillControls.previewAvailable = true
             //cameraUI.state = "PhotoPreview"
         }
 
         onImageSaved : {
+        console.log("image saved")
             console.log(capturedImagePath)
             repho.storeImage(capturedImagePath)
+        }
+    }
+
+
+    /** Preview **/
+    Image {
+        id : imagePreview
+        y: 0
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        Label {
+            text : "<h3>Tap to hide preview</h3>"
+            color : "white"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom : parent.bottom
+            anchors.bottomMargin : 48
         }
     }
 
@@ -120,7 +174,16 @@ Page {
         smooth : true
         sourceSize.width : 854
         sourceSize.height : 480
+        onStatusChanged : {
+            if (status == Image.Ready) {
+                oView.state = "imageCapture"
+            } else {
+                oView.status = "noImage"
+            }
+        }
     }
+
+
 
     /** Toolbar **/
 
@@ -167,7 +230,7 @@ Page {
         id : shutterL
         width : 160
         height : 100
-        visible : oldImage.source != "" && screen.currentOrientation != 1
+        visible : shutterVisible && screen.currentOrientation != 1
         anchors.verticalCenter : parent.verticalCenter
         anchors.right : parent.right
         anchors.rightMargin : 16
@@ -183,7 +246,7 @@ Page {
         id : shutterP
         width : 160
         height : 100
-        visible : oldImage.source != "" && screen.currentOrientation == 1
+        visible : shutterVisible && screen.currentOrientation == 1
         anchors.horizontalCenter : parent.horizontalCenter
         anchors.bottom : parent.bottom
         anchors.bottomMargin : 16
@@ -194,6 +257,15 @@ Page {
         onClicked : {
             console.log("shutter pressed")
             camera.captureImage()
+            oView.state = "imagePreview"
+        }
+    }
+
+    MouseArea {
+        id : previewMA
+        anchors.fill : parent
+        onClicked : {
+            oView.state = "imageCapture"
         }
     }
 
