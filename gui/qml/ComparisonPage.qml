@@ -5,7 +5,7 @@ import com.nokia.extras 1.0
 Page {
     id : comPage
 
-    property int index : 0
+    property int index : -1
 
     onIndexChanged : {
         console.log(index)
@@ -44,13 +44,23 @@ Page {
 
     Label {
         visible : imagePreview.visible
-        text : repho.getCurrentFileName() + "<br>" + (index+1) + "/" + captureList.count
+        text : repho.getCurrentFileName()
         color : "white"
         font.pixelSize : 32
         horizontalAlignment : Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom : oView.bottom
-        anchors.bottomMargin : 48
+        anchors.top : parent.top
+        anchors.bottomMargin : 16
+    }
+    Label {
+        visible : imagePreview.visible
+        text : "<br>" + (index+1) + "/" + captureList.count
+        color : "white"
+        font.pixelSize : 32
+        horizontalAlignment : Text.AlignHCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom : parent.bottom
+        anchors.bottomMargin : 16
     }
 
     tools: ToolBarLayout {

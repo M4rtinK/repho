@@ -46,6 +46,7 @@ PageStackWindow {
             console.log("File selector accepted")
             // reset capture list
             captureList.clear()
+            comparisonPage.index = -1
 
             repho.fileOpened(selectedFile)
             oldImageURL = selectedFile

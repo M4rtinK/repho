@@ -85,6 +85,9 @@ Menu {
                 width : mLayout.width/2.0
                 enabled : captureList.count > 0
                 onClicked : {
+                    if (comparisonPage.index < 0) {
+                        comparisonPage.index = 0
+                    }
                     rootWindow.pageStack.push(comparisonPage)
                 }
             }
