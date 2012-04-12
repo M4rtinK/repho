@@ -14,8 +14,6 @@ PageStackWindow {
 
     property int statusBarHeight : 36
 
-
-
     /* TODO: replace hardcoded value
     with actual status bar height */
     property string oldImageURL: "" // current old image

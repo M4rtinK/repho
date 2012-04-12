@@ -44,9 +44,10 @@ Page {
 
     Label {
         visible : imagePreview.visible
-        text : (index+1) + "/" + captureList.count
+        text : repho.getCurrentFileName() + "<br>" + (index+1) + "/" + captureList.count
         color : "white"
         font.pixelSize : 32
+        horizontalAlignment : Text.AlignHCenter
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom : oView.bottom
         anchors.bottomMargin : 48

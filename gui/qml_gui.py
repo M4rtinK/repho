@@ -328,6 +328,15 @@ class Repho(QObject):
     lastFilePath = self.repho.get('lastFile', defaultPath)
     return lastFilePath
 
+  @QtCore.Slot(result=str)
+  def getCurrentFileName(self):
+    if self.oldImageFilename:
+      return self.oldImageFilename
+    else:
+      return "image name unknown"
+
+
+
 
   @QtCore.Slot()
   def updateHistoryListModel(self):
