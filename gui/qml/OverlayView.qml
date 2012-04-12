@@ -167,8 +167,7 @@ Page {
         id : shutterL
         width : 160
         height : 100
-        visible : screen.currentOrientation != 1
-        enabled : oldImage.source != ""
+        visible : oldImage.source != "" && screen.currentOrientation != 1
         anchors.verticalCenter : parent.verticalCenter
         anchors.right : parent.right
         anchors.rightMargin : 16
@@ -184,8 +183,7 @@ Page {
         id : shutterP
         width : 160
         height : 100
-        visible : screen.currentOrientation == 1
-        enabled : oldImage.source != ""
+        visible : oldImage.source != "" && screen.currentOrientation == 1
         anchors.horizontalCenter : parent.horizontalCenter
         anchors.bottom : parent.bottom
         anchors.bottomMargin : 16
