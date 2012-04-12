@@ -14,6 +14,8 @@ PageStackWindow {
 
     property int statusBarHeight : 36
 
+
+
     /* TODO: replace hardcoded value
     with actual status bar height */
     property string oldImageURL: "" // current old image
@@ -44,22 +46,29 @@ PageStackWindow {
         //anchors.fill : rootWindow
         onAccepted: {
             console.log("File selector accepted")
-            /*
-            console.log(selectedFile)
-            options.set('lastChooserFolder', selectedFile)
-            console.log(options.get('lastChooserFolder'))
-            */
+            // reset capture list
+            captureList.clear()
+
             repho.fileOpened(selectedFile)
             oldImageURL = selectedFile
         }
     }
 
+    /** Overlay menu **/
     OverlayMenu {
-      id : ageFitSelectorOverlay
+        id : overlayMenu
     }
 
     SideBySideMenu {
       id : pageFitSelectorSbS
+    }
+
+    ListModel {
+        id : captureList
+    }
+
+    ComparisonPage {
+        id : comparisonPage
     }
 
 

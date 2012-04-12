@@ -73,5 +73,18 @@ Menu {
                 }
             }
         }
+        Label {
+            text : "<b>Image</b>"
+        }
+        Row  {
+            Button {
+                text: "compare"
+                width : mLayout.width/2.0
+                enabled : captureList.count > 0
+                onClicked : {
+                    rootWindow.pageStack.push(comparisonPage)
+                }
+            }
+        }
     }
 }

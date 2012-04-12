@@ -275,7 +275,7 @@ class Repho(QObject):
 
     return lastFolder
 
-  @QtCore.Slot(str,result=bool)
+  @QtCore.Slot(str,result=str)
   def storeImage(self, capturedImagePath):
     today = datetime.date.today()
 
@@ -320,6 +320,7 @@ class Repho(QObject):
     shutil.move(capturedImagePath, savedImagePath)
     print savedImagePath
     self.gui._notify("Saved as:<br><b>%s</b>" % newFilename)
+    return savedImagePath
 
   @QtCore.Slot(result=str)
   def getSavedFilePath(self):

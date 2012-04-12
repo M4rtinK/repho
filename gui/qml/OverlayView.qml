@@ -144,12 +144,13 @@ Page {
         onImageSaved : {
         console.log("image saved")
             console.log(capturedImagePath)
-            repho.storeImage(capturedImagePath)
+            var storagePath = repho.storeImage(capturedImagePath)
+            captureList.append({"path":storagePath})
         }
     }
 
 
-    /** Preview **/
+    /** Preview image **/
     Image {
         id : imagePreview
         y: 0
@@ -181,6 +182,7 @@ Page {
     }
 
     /** Preview label **/
+
     Label {
         visible : imagePreview.visible
         text : "<h3>Tap to hide preview</h3>"
@@ -208,9 +210,6 @@ Page {
         }
         ToolIcon {
             iconId : "toolbar-settings"
-            //anchors.top : backTI.top
-            //anchors.bottom : backTI.bottom
-            //flat : true
             onClicked : { overlayMenu.open() }
         }
         ToolIcon {
@@ -223,12 +222,6 @@ Page {
     MainMenu {
         id : mainViewMenu
     }
-
-    /** Overlay menu **/
-    OverlayMenu {
-        id : overlayMenu
-    }
-
 
     /** Camera button **/
     Button {
