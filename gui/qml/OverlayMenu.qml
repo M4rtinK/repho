@@ -22,21 +22,24 @@ Menu {
                 stepSize: 0.01
                 valueIndicatorText : Math.round(value*100) + " %"
                 valueIndicatorVisible: true
+                onValueChanged : {
+                    oView.overlayOpacity = value
+                }
+                /*
                 onPressedChanged : {
                     var outputValue
                     //completely transparent items don't receive events
                     if (value == 0) {
                         outputValue = 0.01
                     } else {
-                        /* round away small fractions
-                        that were created by the assured lowest value
-                        */
+                        // round away small fractions
+                        // that were created by the assured lowest value
                         outputValue = Math.round(value*100)/100
                     }
                     //update once dragging stops
                     //options.set("QMLFullscreenButtonOpacity", outputValue)
                     oView.overlayOpacity = outputValue
-                }
+                }*/
 
             }
         }
