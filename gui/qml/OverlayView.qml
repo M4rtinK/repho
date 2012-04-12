@@ -76,6 +76,7 @@ Page {
                     shutterVisible = false
                     imagePreview.visible = false
                     previewMA.visible = false
+                    camera.visible = true
                 }
             }
         },
@@ -86,6 +87,7 @@ Page {
                     shutterVisible = true
                     imagePreview.visible = false
                     previewMA.visible = false
+                    camera.visible = true
                 }
             }
         },
@@ -96,6 +98,7 @@ Page {
                     shutterVisible = false
                     imagePreview.visible = true
                     previewMA.visible = true
+                    camera.visible = false
                 }
             }
         }
@@ -150,15 +153,9 @@ Page {
     Image {
         id : imagePreview
         y: 0
+        rotation: screen.currentOrientation == 1 ? 90 :0
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
-        Label {
-            text : "<h3>Tap to hide preview</h3>"
-            color : "white"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom : parent.bottom
-            anchors.bottomMargin : 48
-        }
     }
 
     /** Image overlay **/
@@ -183,7 +180,15 @@ Page {
         }
     }
 
-
+    /** Preview label **/
+    Label {
+        visible : imagePreview.visible
+        text : "<h3>Tap to hide preview</h3>"
+        color : "white"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom : oView.bottom
+        anchors.bottomMargin : 48
+    }
 
     /** Toolbar **/
 
