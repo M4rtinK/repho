@@ -30,12 +30,14 @@ Menu {
         }
         **/
 
+        /**
         MenuItem {
             text : "Options"
             onClicked : {
                 rootWindow.openFile("OptionsPage.qml")
                 }
         }
+        **/
 
         MenuItem {
             text : "About"
