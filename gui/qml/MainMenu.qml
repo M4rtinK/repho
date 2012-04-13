@@ -6,6 +6,12 @@ Menu {
     id : mainViewMenu
     MenuLayout {
         MenuItem {
+            text : "Open from gallery"
+            onClicked : {
+                rootWindow.pageStack.push(galleryPage)
+                }
+        }
+        MenuItem {
             text : "Open from file"
             onClicked : {
                 console.log("Opening file selector")
@@ -15,20 +21,14 @@ Menu {
                 fileSelector.open();
         }
     }
-
-        MenuItem {
-            text : "Open from gallery"
-            onClicked : {
-                //rootWindow.openFile("HistoryPage.qml")
-                }
-        }
-
+        /**
         MenuItem {
             text : "Open URL"
             onClicked : {
                 //rootWindow.openFile("HistoryPage.qml")
                 }
         }
+        **/
 
         MenuItem {
             text : "Options"
