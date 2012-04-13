@@ -120,12 +120,6 @@ Page {
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
         state: Camera.ActiveState
-        onVisibleChanged : {
-            console.log("camera visible")
-            console.log(visible)
-        }
-
-
 
         //captureResolution : "640x480"
 
