@@ -39,19 +39,31 @@ PageStackWindow {
         firstStartDialog.open()
     }
 
+    function openImageFile(path) {
+        // reset capture list
+        captureList.clear()
+        comparisonPage.index = -1
+
+        repho.fileOpened(path)
+        oldImageURL = path
+    }
+
     FileSelector {
         id: fileSelector;
         //anchors.fill : rootWindow
         onAccepted: {
             console.log("File selector accepted")
-            // reset capture list
-            captureList.clear()
-            comparisonPage.index = -1
-
-            repho.fileOpened(selectedFile)
-            oldImageURL = selectedFile
+            openImageFile(selectedFile)
         }
     }
+
+    /** Gallery selection dialog **/
+
+
+    GalleryPage {
+        id : galleryPage
+    }
+
 
     /** Overlay menu **/
     OverlayMenu {
