@@ -39,13 +39,24 @@ PageStackWindow {
         firstStartDialog.open()
     }
 
-    function openImageFile(path) {
+    function openImageFile(path,imageUrl) {
         // reset capture list
         captureList.clear()
         comparisonPage.index = -1
 
         repho.fileOpened(path)
-        oldImageURL = path
+        if (imageUrl == "") {
+            oldImageURL = path
+        } else {
+            oldImageURL = imageUrl
+        }
+        console.log(oldImageURL)
+
+    }
+
+    function openUrl(url) {
+        // store url downloads in pictures by default
+        openImageFile("/home/user/MyDocs/pictures/URL", url)
     }
 
     FileSelector {
@@ -53,7 +64,7 @@ PageStackWindow {
         //anchors.fill : rootWindow
         onAccepted: {
             console.log("File selector accepted")
-            openImageFile(selectedFile)
+            openImageFile(selectedFile, "")
         }
     }
 
@@ -68,6 +79,11 @@ PageStackWindow {
     /** Overlay menu **/
     OverlayMenu {
         id : overlayMenu
+    }
+
+    /** Url menu **/
+    UrlMenu {
+        id : urlMenu
     }
 
     SideBySideMenu {

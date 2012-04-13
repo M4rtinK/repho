@@ -21,14 +21,12 @@ Menu {
                 fileSelector.open();
         }
     }
-        /**
         MenuItem {
             text : "Open URL"
             onClicked : {
-                //rootWindow.openFile("HistoryPage.qml")
+                urlMenu.open()
                 }
         }
-        **/
 
         /**
         MenuItem {
