@@ -170,7 +170,7 @@ Page {
             console.log("image captured")
             if (oView.newIsOld || timersEnabled) {
                 oldImage.rotation = screen.currentOrientation == 1 ? 90 :0
-                oldImage.source = preview
+                oldImageURL = preview
             } else {
                 imagePreview.source = preview
                 oView.state = "imagePreview"
