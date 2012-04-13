@@ -352,6 +352,16 @@ Page {
         font.pixelSize : 32
     }
 
+    Label {
+        anchors.horizontalCenter : parent.horizontalCenter
+        anchors.bottom : parent.bottom
+        anchors.bottomMargin : 16
+        text : timedCaptureCount==0 ? "" : + timedCaptureCount + " images captured"
+        color: "white"
+        visible : timersEnabled
+        font.pixelSize : 32
+    }
+
 
     /** Capture paused indicator **/
     Rectangle {
