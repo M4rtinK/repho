@@ -290,7 +290,7 @@ Page {
         visible : !platformWindow.active
         color : "grey"
         Label {
-            text : "<h1>Paused</h1>"
+            text : "<h1>Camera paused</h1>"
             color : "white"
             anchors.centerIn : parent
         }
