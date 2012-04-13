@@ -54,7 +54,7 @@ Page {
     }
     Label {
         visible : imagePreview.visible
-        text : "<br>" + (index+1) + "/" + captureList.count
+        text : "(index+1) + "/" + captureList.count
         color : "white"
         font.pixelSize : 32
         horizontalAlignment : Text.AlignHCenter
