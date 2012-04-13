@@ -48,20 +48,6 @@ Page {
         }
     }
 
-    function showPrevFeedback() {
-    // only show with feedback enabled and no feedback in progress
-        if (oView.pagingFeedback && !prevFbTimer.running) {
-            prevFbTimer.start()
-        }
-    }
-
-    function showNextFeedback() {
-    // only show with feedback enabled and no feedback in progress
-        if (oView.pagingFeedback && !nextFbTimer.running) {
-            nextFbTimer.start()
-        }
-    }
-
     Component.onCompleted : {
       restoreRotation()
     }
@@ -76,7 +62,6 @@ Page {
                     shutterVisible = false
                     imagePreview.visible = false
                     previewMA.visible = false
-                    camera.visible = true
                 }
             }
         },
@@ -87,7 +72,6 @@ Page {
                     shutterVisible = true
                     imagePreview.visible = false
                     previewMA.visible = false
-                    camera.visible = true
                 }
             }
         },
@@ -126,6 +110,13 @@ Page {
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
         state: Camera.ActiveState
+        visible : platformWindow.active
+        onVisibleChanged : {
+            console.log("camera visible")
+            console.log(visible)
+        }
+
+
 
         //captureResolution : "640x480"
 
@@ -237,6 +228,7 @@ Page {
         onClicked : {
             console.log("shutter pressed")
             camera.captureImage()
+            oView.state = "imagePreview"
         }
     }
 
@@ -278,72 +270,16 @@ Page {
         visible : oldImage.source == ""
     }
 
-    /** Paging feedback **/
-
-    Item {
-        id : previousFeedback
-        visible : false
-        opacity : 0.7
-        anchors.verticalCenter : parent.verticalCenter
-        anchors.left : parent.left
-        anchors.leftMargin : 20
-        Image {
-            id : previousIcon
-            anchors.left : parent.left
-            source : "image://theme/icon-m-toolbar-previous"
+    /** Capture paused indicator **/
+    Rectangle {
+        anchors.fill : parent
+        visible : !camera.visible
+        color : "grey"
+        Label {
+            text : "<h1>Paused</h1>"
+            color : "white"
+            anchors.centerIn : parent
         }
-        /* Text {
-            //text : "<b>PREVIOUS</b>"
-            anchors.left : previousIcon.right
-            anchors.leftMargin : 20
-            anchors.verticalCenter : previousIcon.verticalCenter
-            style : Text.Outline
-            styleColor : "white"
-            font.pixelSize : 25
-        } */
-    }
-    Item {
-        id : nextFeedback
-        visible : false
-        opacity : 0.7
-        anchors.verticalCenter : parent.verticalCenter
-        anchors.right : parent.right
-        anchors.rightMargin : 20
-        Image {
-            id : nextIcon
-            anchors.right : parent.right
-            source : "image://theme/icon-m-toolbar-next"
-        }
-        /* Text {
-            //text : "<b>NEXT</b>"
-            anchors.right : nextIcon.left
-            anchors.rightMargin : 20
-            anchors.verticalCenter : nextIcon.verticalCenter
-            style : Text.Outline
-            styleColor : "white"
-            font.pixelSize : 25
-            //color : "white"
-        } */
-    }
 
-    Timer {
-        id : prevFbTimer
-        interval : 500
-        // we need to show and hide the feedback
-        triggeredOnStart : true
-        onTriggered : {
-            previousFeedback.visible = !previousFeedback.visible
-        }
     }
-    Timer {
-        id : nextFbTimer
-        interval : 500
-        // we need to show and hide the feedback
-        triggeredOnStart : true
-        onTriggered : {
-            nextFeedback.visible = !nextFeedback.visible
-        }
-    }
-
-
 }
