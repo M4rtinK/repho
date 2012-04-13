@@ -176,7 +176,7 @@ Page {
             if (status == Image.Ready) {
                 oView.state = "imageCapture"
             } else {
-                oView.status = "noImage"
+                oView.state = "noImage"
             }
         }
     }
