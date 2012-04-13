@@ -286,8 +286,27 @@ class Repho(QObject):
   def getSavedFileSelectorPath(self):
     defaultPath = self.repho.platform.getDefaultFileSelectorPath()
     lastFolder = self.repho.get('lastChooserFolder', defaultPath)
-
     return lastFolder
+
+  @QtCore.Slot(str,result=str)
+  def storeNewAsOld(self, capturedImagePath):
+    """
+    store an image captured by RePho
+    as if it was a normally loaded "old" image
+
+    * move it from the camera capture file
+    * set paths as if it was loaded from a file/url/gallery
+    """
+    dateString = str(int(time.time()))
+    filename = "rp" + dateString + ".jpg"
+    self.oldImageFilename = filename
+    folder = "/home/user/MyDocs/pictures"
+    self.currentFolder = folder
+
+    storagePath = os.path.join(folder,filename)
+    shutil.move(capturedImagePath, storagePath)
+    self.gui._notify("Saved as:<br><b>%s</b>" % storagePath)
+    return storagePath
 
   @QtCore.Slot(str,result=str)
   def storeImage(self, capturedImagePath):

@@ -30,7 +30,9 @@ Menu {
         MenuItem {
             text : "Capture with camera"
             onClicked : {
+                prepareForNewImage()
                 oView.state = "imageCapture"
+                oView.newIsOld = true
 
                 }
         }

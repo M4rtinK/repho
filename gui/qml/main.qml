@@ -51,6 +51,7 @@ PageStackWindow {
 
     function prepareForNewImage() {
         // reset capture list
+        oldImageURL=""
         captureList.clear()
         comparisonPage.index = -1
     }

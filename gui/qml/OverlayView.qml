@@ -15,6 +15,14 @@ Page {
     property bool shutterVisible : false
     property real overlayOpacity : 0.5
     property int overlayRotation : 0
+    property bool newIsOld : false
+
+    Connections {
+        target : platformWindow
+        onActiveChanged : {
+            camera.visible = platformWindow.active
+        }
+    }
 
 
     // workaround for calling python properties causing segfaults
@@ -62,6 +70,7 @@ Page {
                     shutterVisible = false
                     imagePreview.visible = false
                     previewMA.visible = false
+                    camera.visible = true
                 }
             }
         },
@@ -72,6 +81,7 @@ Page {
                     shutterVisible = true
                     imagePreview.visible = false
                     previewMA.visible = false
+                    camera.visible = true
                 }
             }
         },
@@ -110,7 +120,6 @@ Page {
         whiteBalanceMode: Camera.WhiteBalanceAuto
         exposureCompensation: -1.0
         state: Camera.ActiveState
-        visible : platformWindow.active
         onVisibleChanged : {
             console.log("camera visible")
             console.log(visible)
@@ -126,17 +135,24 @@ Page {
 
         onImageCaptured : {
             console.log("image captured")
-            imagePreview.source = preview
-            oView.state = "imagePreview"
-            //stillControls.previewAvailable = true
-            //cameraUI.state = "PhotoPreview"
+            if (oView.newIsOld) {
+                oldImage.source = preview
+            } else {
+                imagePreview.source = preview
+                oView.state = "imagePreview"
+            }
         }
 
         onImageSaved : {
-        console.log("image saved")
-            console.log(capturedImagePath)
-            var storagePath = repho.storeImage(capturedImagePath)
-            captureList.append({"path":storagePath})
+            console.log("image saved")
+            var storagePath
+            if (oView.newIsOld) {
+                repho.storeNewAsOld(capturedImagePath)
+                oView.newIsOld = false
+            } else {
+                storagePath = repho.storeImage(capturedImagePath)
+                captureList.append({"path":storagePath})
+            }
         }
     }
 
@@ -228,7 +244,6 @@ Page {
         onClicked : {
             console.log("shutter pressed")
             camera.captureImage()
-            oView.state = "imagePreview"
         }
     }
 
@@ -247,7 +262,6 @@ Page {
         onClicked : {
             console.log("shutter pressed")
             camera.captureImage()
-            oView.state = "imagePreview"
         }
     }
 
@@ -267,13 +281,13 @@ Page {
         //text : "<h1>No pages loaded</h1>"
         text : "<h2>No old image loaded</h2>"
         color: "white"
-        visible : oldImage.source == ""
+        visible : !oView.newIsOld && oldImage.source == ""
     }
 
     /** Capture paused indicator **/
     Rectangle {
         anchors.fill : parent
-        visible : !camera.visible
+        visible : !platformWindow.active
         color : "grey"
         Label {
             text : "<h1>Paused</h1>"
