@@ -12,6 +12,10 @@ PageStackWindow {
                       id : oView
                       }
 
+    Component.onCompleted: {
+        //theme.inverted = true;
+    }
+
     property int statusBarHeight : 36
 
     /* TODO: replace hardcoded value
@@ -42,11 +46,7 @@ PageStackWindow {
     function openImageFile(path) {
         prepareForNewImage()
         repho.fileOpened(path)
-        if (imageUrl == "") {
-            oldImageURL = path
-        } else {
-            oldImageURL = imageUrl
-        }
+        oldImageURL = path
     }
 
     function prepareForNewImage() {
@@ -88,6 +88,11 @@ PageStackWindow {
     /** Url menu **/
     UrlMenu {
         id : urlMenu
+    }
+
+    /** Timing menu **/
+    TimingMenu {
+        id : timingMenu
     }
 
     SideBySideMenu {

@@ -17,6 +17,11 @@ Page {
     property int overlayRotation : 0
     property bool newIsOld : false
 
+    property int timedCaptureCount : 0
+    property int timedCaptureInterval : 10
+    property int sElapsed : 0
+    property bool timersEnabled : false
+
     Connections {
         target : platformWindow
         onActiveChanged : {
@@ -56,6 +61,19 @@ Page {
         }
     }
 
+
+
+    function startTimedCapture(interval) {
+        timedCaptureInterval = interval
+        state = "timedImageCapture"
+        //timedB.checked = true
+    }
+
+    function stopTimedCapture() {
+        state = "imageCapture"
+    }
+
+
     Component.onCompleted : {
       restoreRotation()
     }
@@ -71,6 +89,8 @@ Page {
                     imagePreview.visible = false
                     previewMA.visible = false
                     camera.visible = true
+                    timersEnabled = false
+                    timedB.visible = false
                 }
             }
         },
@@ -82,6 +102,21 @@ Page {
                     imagePreview.visible = false
                     previewMA.visible = false
                     camera.visible = true
+                    timersEnabled = false
+                    timedB.visible = true
+                }
+            }
+        },
+        State {
+            name : "timedImageCapture"
+            StateChangeScript {
+                script : {
+                    shutterVisible = false
+                    imagePreview.visible = false
+                    previewMA.visible = false
+                    camera.visible = true
+                    timersEnabled = true
+                    timedB.visible = true
                 }
             }
         },
@@ -93,10 +128,16 @@ Page {
                     imagePreview.visible = true
                     previewMA.visible = true
                     camera.visible = false
+                    timersEnabled = false
+                    timedB.visible = false
                 }
             }
         }
     ]
+
+    onStateChanged : {
+        console.log(state)
+    }
 
     Rectangle {
         anchors.fill : parent
@@ -129,7 +170,7 @@ Page {
 
         onImageCaptured : {
             console.log("image captured")
-            if (oView.newIsOld) {
+            if (oView.newIsOld || timersEnabled) {
                 oldImage.source = preview
             } else {
                 imagePreview.source = preview
@@ -224,7 +265,7 @@ Page {
         id : mainViewMenu
     }
 
-    /** Camera button **/
+    /** Camera buttons **/
     Button {
         id : shutterL
         width : 160
@@ -259,6 +300,29 @@ Page {
         }
     }
 
+    Button {
+        id : timedB
+        width : 80
+        height : 80
+        anchors.top : parent.top
+        anchors.right : parent.right
+        anchors.topMargin : 16
+        anchors.rightMargin : 32
+        opacity : 0.7
+        iconSource : "image://theme/icon-m-common-clock"
+        checked : timersEnabled
+        onClicked : {
+            console.log("timed pressed")
+            if (checked) {
+                stopTimedCapture()
+            } else {
+                timingMenu.open()
+            }
+        }
+    }
+
+
+
     MouseArea {
         id : previewMA
         anchors.fill : parent
@@ -278,6 +342,18 @@ Page {
         visible : !oView.newIsOld && oldImage.source == ""
     }
 
+
+    /** Timed capture label **/
+
+    Label {
+        anchors.centerIn : parent
+        text : sElapsed == 0 ? "Taking picture" : + (timedCaptureInterval-sElapsed) +" s to next capture"
+        color: "white"
+        visible : timersEnabled
+        font.pixelSize : 32
+    }
+
+
     /** Capture paused indicator **/
     Rectangle {
         anchors.fill : parent
@@ -290,4 +366,36 @@ Page {
         }
 
     }
+
+    Timer {
+        // update timed capture status
+        id : tickTimer
+        interval : 1000
+        repeat : true
+        running : timersEnabled
+        onTriggered : {
+            var elapsed = sElapsed + 1
+            sElapsed = sElapsed + 1
+            if (sElapsed == timedCaptureInterval) {
+                sElapsed = 0
+                camera.captureImage()
+            } else {
+                sElapsed = elapsed
+            }
+        }
+    }
+
+    /*
+    Timer {
+        // capture image in a given interval
+        id : captureTimer
+        interval : timedCaptureInterval * 1000
+        repeat : true
+        running : timersEnabled
+        onTriggered : {
+            sElapsed = 0
+            console.log("captureTimer triggered")
+        }
+    }*/
+
 }
