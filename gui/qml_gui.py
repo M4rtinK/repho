@@ -6,6 +6,7 @@ import sys
 import re
 import os
 from PySide import QtCore, QtOpenGL
+import urllib
 from PySide.QtCore import *
 from PySide.QtGui import *
 from PySide.QtDeclarative import *
@@ -256,6 +257,10 @@ class Repho(QObject):
   def toggleFullscreen(self):
     self.gui.toggleFullscreen()
 
+  @QtCore.Slot(result=int)
+  def getEpoch(self):
+    return int(time.time())
+
   @QtCore.Slot(str)
   def fileOpened(self, path):
     # remove the "file:// part of the path"
@@ -267,6 +272,15 @@ class Repho(QObject):
     self.repho.set('lastFile', path)
     self.currentFolder = folder
     self.oldImageFilename = filename
+
+  @QtCore.Slot(str)
+  def urlOpened(self, url):
+    # remove the "file:// part of the path"
+    folder = "/home/user/MyDocs/pictures"
+    self.currentFolder = folder
+    filename = os.path.basename(url)
+    self.oldImageFilename = filename
+    urllib.urlretrieve(url,os.path.join(folder, filename))
 
   @QtCore.Slot(result=str)
   def getSavedFileSelectorPath(self):
