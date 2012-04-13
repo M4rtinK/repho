@@ -25,7 +25,7 @@ Menu {
                 validator : IntValidator {bottom : 1}
                 inputMethodHints: Qt.ImhDigitsOnly
                 width : usableWidth/2.0
-                text : "10"
+                text : "" + options.get("timedCaptureInterval", 10)
             }
 
             Label {

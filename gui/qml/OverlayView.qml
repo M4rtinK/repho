@@ -61,12 +61,10 @@ Page {
         }
     }
 
-
-
     function startTimedCapture(interval) {
         timedCaptureInterval = interval
+        options.set("timedCaptureInterval", interval)
         state = "timedImageCapture"
-        //timedB.checked = true
     }
 
     function stopTimedCapture() {
@@ -171,6 +169,7 @@ Page {
         onImageCaptured : {
             console.log("image captured")
             if (oView.newIsOld || timersEnabled) {
+                oldImage.rotation = screen.currentOrientation == 1 ? 90 :0
                 oldImage.source = preview
             } else {
                 imagePreview.source = preview
@@ -347,7 +346,7 @@ Page {
 
     Label {
         anchors.centerIn : parent
-        text : sElapsed == 0 ? "Taking picture" : + (timedCaptureInterval-sElapsed) +" s to next capture"
+        text : sElapsed == 0 && timedCaptureCount>0 ? "Taking picture" : + (timedCaptureInterval-sElapsed) +" s to next capture"
         color: "white"
         visible : timersEnabled
         font.pixelSize : 32
@@ -378,6 +377,7 @@ Page {
             sElapsed = sElapsed + 1
             if (sElapsed == timedCaptureInterval) {
                 sElapsed = 0
+                timedCaptureCount = timedCaptureCount + 1
                 camera.captureImage()
             } else {
                 sElapsed = elapsed
