@@ -19,12 +19,19 @@ Menu {
                 fileSelector.down(repho.getSavedFileSelectorPath());
                 //fileSelector.down("/home/user/MyDocs");
                 fileSelector.open();
+            }
         }
-    }
         MenuItem {
-            text : "Open URL"
+            text : "Open from URL"
             onClicked : {
                 urlMenu.open()
+                }
+        }
+        MenuItem {
+            text : "Capture with camera"
+            onClicked : {
+                oView.state = "imageCapture"
+
                 }
         }
 
