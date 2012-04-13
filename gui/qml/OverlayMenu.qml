@@ -89,6 +89,7 @@ Menu {
                         comparisonPage.index = 0
                     }
                     rootWindow.pageStack.push(comparisonPage)
+                    close()
                 }
             }
         }
