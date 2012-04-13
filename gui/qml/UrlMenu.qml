@@ -43,6 +43,7 @@ Menu {
                 width : mButtonRow.usableWidth/2.0
                 onClicked: {
                     openUrl(urlField.text)
+                    close()
                 }
             }
         }
